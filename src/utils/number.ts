@@ -1,3 +1,4 @@
+// 格式化时间的模块
 export function useNumberFormat(number: number): string | number {
 
 
@@ -15,7 +16,7 @@ export function useNumberFormat(number: number): string | number {
 
     return number;
 }
-
+// 格式化时间
 export function useFormatDuring(during: number) {
     const s = Math.floor(during) % 60;
     during = Math.floor(during / 60);

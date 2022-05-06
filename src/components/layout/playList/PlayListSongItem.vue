@@ -5,8 +5,7 @@
       <div class="flex flex-1 flex-col justify-between truncate">
         <div class="flex">
           <div class="truncate">{{ song.name }}</div>
-          <IconPark v-if="song.mv>0" class="ml-2 text-orange-400 cursor-pointer" size="16"
-                    :icon="Youtube" @click="router.push({name:Pages.mvDetail,query:{id:song.mv}})"/>
+          <IconPark v-if="song.mv>0" class="ml-2 text-orange-400 cursor-pointer" size="16" :icon="Youtube" @click="router.push({name:Pages.mvDetail,query:{id:song.mv}})"/>
         </div>
         <div class="truncate">{{ song.ar.first().name }}</div>
       </div>

@@ -1,10 +1,12 @@
 <template>
   <ElScrollbar>
-    <el-button style="display: none" @click="open2">success</el-button>
-<!--    <el-button @click="open2('hhh')">success</el-button>-->
     <div class="mt-10 pl-6 pr-6 space-y-1.5" v-for="(menuItem,index) in menus" :key="index">
       <div class="menu-title text-main">{{ menuItem.name }}</div>
-      <div class="menu-item hover-bg-main text-main" v-for="menu in menuItem.menus" :key="menu.key" :class="{ 'active': currentKey === menu.key }" @click="click(menu)">
+      <div class="menu-item hover-bg-main text-main" 
+        v-for="menu in menuItem.menus" 
+        :key="menu.key" 
+        :class="{ 'active': currentKey === menu.key }" 
+        @click="click(menu)">
         <IconPark :icon="menu.icon" size="18" :theme="menu.theme" />
         <span class="ml-1">{{ menu.name }}</span>
       </div>
@@ -17,12 +19,6 @@ import { userMenu } from '@/components/layout/menu/useMenu'
 import IconPark from '@/components/common/IconPark.vue'
 
 const { menus, currentKey ,click} = userMenu()
-const open2 = (str:string) => {
-  ElMessage({
-    message: `Congrats, this is a success message.${str}`,
-    type: 'success',
-  })
-}
 </script>
 
 

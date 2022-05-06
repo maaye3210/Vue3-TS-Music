@@ -1,4 +1,5 @@
 <template>
+<!-- 详情文字组件，在多处复用 -->
   <div class="leading-5">
   <template v-if="show">
     <span v-if="!isShow">{{ text.substring(0, end) }}...</span>

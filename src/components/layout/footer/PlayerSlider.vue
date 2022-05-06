@@ -1,7 +1,6 @@
 <template>
   <div class="player-slider">
-    <el-slider :show-tooltip="false" :min="0" v-model="currentTime" :max="duration" @change="onSliderChange"
-               @input="onSliderInput"/>
+    <el-slider :show-tooltip="false" :min="0" v-model="currentTime" :max="duration" @change="onSliderChange" @input="onSliderInput"/>
   </div>
 </template>
 

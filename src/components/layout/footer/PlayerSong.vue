@@ -4,9 +4,7 @@
     <div class="ml-2 text-xs flex flex-col justify-between">
       <div class="w-52 2xl:w-96 cursor-pointer truncate">
         <div class="flex">
-          <div v-if="songUrl.freeTrialInfo?.end>0"
-               class="bg-red-500  text-xs text-white rounded px-0.5 scale-75">试听
-          </div>
+          <div v-if="songUrl.freeTrialInfo?.end>0" class="bg-red-500  text-xs text-white rounded px-0.5 scale-75">试听</div>
           <span>{{ song.name || '开源云音乐' }}</span>
           <span class="ml-2 text-dc">- {{ song.ar?.first().name || `SmallRuralDog` }}</span>
         </div>

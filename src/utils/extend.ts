@@ -1,14 +1,14 @@
-import {first,last, sampleSize,sample, chunk, trimEnd} from 'lodash'
+import { first, last, sampleSize, sample, chunk, trimEnd } from 'lodash'
 import dayjs from 'dayjs'
-import {useNumberFormat} from "@/utils/number";
+import { useNumberFormat } from "@/utils/number";
 
 declare global {
     interface Array<T> {
         /**
          * 获取数组第一个元素
          */
-        first<T>(this: T[]): T
 
+        first<T>(this: T[]): T
         last<T>(this: T[]): T
         sample<T>(this: T[]): T
 
@@ -16,12 +16,14 @@ declare global {
          * 获得 n 个随机元素
          * @param size
          */
+
         sampleSize<T>(this: T[], size: number): T[]
 
         /**
          * 将数组（array）拆分成多个 size 长度的区块
          * @param size
          */
+        
         chunk<T>(this: T[], size: number): T[][]
 
     }

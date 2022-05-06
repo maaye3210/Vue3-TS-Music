@@ -94,7 +94,7 @@ export function userMenu() {
         try {
             await router.push({name: menu.key, replace: true,})
         }catch (e){
-            console.log(menu.name)
+            console.log(e)
             ElMessage({
                 message: `${menu.name}模块正在开发ing...过段时间再来看吧 ^_^ ~`,
                 type: 'success'

@@ -1,11 +1,10 @@
+<!-- 歌曲条目 -->
 <template>
-  <div class="flex song-item items-center w-full hover-bg-main" :class="{'playing':id===song.id}"
-       @dblclick="play(song.id)">
+  <div class="flex song-item items-center w-full hover-bg-main" :class="{'playing':id===song.id}" @dblclick="play(song.id)">
     <div class="flex-shrink-0 flex-1 flex items-center justify-between pr-5 ">
 
       <div class="items-center flex flex-1 w-10 flex-shrink-0">
-        <IconPark :icon="Like" size="16"
-                  class="text-gray-500 mr-1 cursor-pointer hover:text-red-400"/>
+        <IconPark :icon="Like" size="16" class="text-gray-500 mr-1 cursor-pointer hover:text-red-400"/>
         <div class="truncate" style="max-width: 75%;">
           <small>{{ song.name }}</small>
         </div>

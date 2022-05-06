@@ -10,6 +10,7 @@ const router = createRouter({
             component: () => import('@/views/Root.vue'),
             redirect: {name: Pages.discover},
             children: [
+                // 推荐页
                 {
                     path: 'discover',
                     name: 'discover',
@@ -19,6 +20,7 @@ const router = createRouter({
                         keepAlive: true,
                     }
                 },
+                // 音乐馆
                 {
                     path: 'music',
                     name: 'music',
@@ -68,21 +70,25 @@ const router = createRouter({
                         }
                     ]
                 },
+                // 歌单
                 {
                     path: 'playlist',
                     name: 'playlist',
                     component: () => import('@/views/playlist/PlayList.vue'),
                 },
+                // 歌手信息
                 {
                     path: 'artistDetail',
                     name: 'artistDetail',
                     component: () => import('@/views/artist/ArtistDetail.vue'),
                 },
+                // 数字专辑
                 {
                     path: 'album',
                     name: 'album',
                     component: () => import('@/views/album/Album.vue'),
                 },
+                // 视频
                 {
                     path: 'video',
                     name: 'video',
@@ -93,6 +99,7 @@ const router = createRouter({
                         keepAlive: true,
                     }
                 },
+                // 电台
                 {
                     path: 'dj',
                     name: 'dj',
@@ -103,6 +110,7 @@ const router = createRouter({
                         keepAlive: true,
                     }
                 },
+                // mv
                 {
                     path: Pages.mvDetail,
                     name: Pages.mvDetail,

@@ -1,4 +1,5 @@
 <template>
+<!-- 标题组件，应该还有一个点击跳转对应详情页功能 -->
   <div class="text-xl py-3 mt-2 flex items-center">
     <div>{{ title }}</div>
     <IconPark :icon="Right" size="25" :stroke-width="2"/>

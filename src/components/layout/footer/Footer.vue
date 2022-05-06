@@ -16,12 +16,9 @@
 </template>
 
 <script setup lang="ts">
-
+// 底部播放控件
 import PlayerSlider from "@/components/layout/footer/PlayerSlider.vue";
 import PlayerSong from "@/components/layout/footer/PlayerSong.vue";
 import PlayerAction from "@/components/layout/footer/PlayerAction.vue";
 import PlayerController from "@/components/layout/footer/PlayerController.vue";
 </script>
-<style lang="scss">
-
-</style>
