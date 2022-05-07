@@ -32,14 +32,6 @@ yarn run dev
 
 ![](https://github.com/maaye3210/Vue3-TS-Music/blob/master/ui/%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9D%97.png)
 
-#### 音乐馆模块
-
-![](https://github.com/maaye3210/Vue3-TS-Music/blob/master/ui/%E9%9F%B3%E4%B9%90%E9%A6%86%E6%A8%A1%E5%9D%97.png)
-
-#### 视频模块
-
-![](https://github.com/maaye3210/Vue3-TS-Music/blob/master/ui/视频模块.png)
-
 #### 音乐播放功能
 
 ![](https://github.com/maaye3210/Vue3-TS-Music/blob/master/ui/音乐播放功能.png)
