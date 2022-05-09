@@ -46,6 +46,8 @@ export function useMusicMenu() {
 
 
     const onTabClick = ({props}: { props: IMusicMenu }) => {
+        console.log(props);
+        
         router.push({name: props.name, replace: true,})
     }
 

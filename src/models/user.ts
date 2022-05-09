@@ -37,3 +37,20 @@ export interface UserProfile {
 	avatarDetail?: any;
 	anchor: boolean;
 }
+export interface Account{
+  anonimousUser: boolean;
+  ban: number;
+  baoyueVersion: number;
+  createTime: number;
+  donateVersion: number;
+  id: number;
+  salt: string;
+  status: number;
+  tokenVersion: number;
+  type: number;
+  uninitialized: boolean;
+  userName: string;
+  vipType: number;
+  viptypeVersion: number;
+  whitelistAuthority: number;
+}

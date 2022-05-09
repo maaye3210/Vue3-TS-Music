@@ -26,3 +26,4 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+src/models/account.json

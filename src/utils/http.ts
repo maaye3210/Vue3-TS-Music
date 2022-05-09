@@ -10,7 +10,8 @@ axios.interceptors.request.use(
 
         config.params = {
             ...config.params,
-            t: Date.now(),
+            // 为每隔借口加上时间戳，防止从缓存读取数据
+            timestamp: Date.now(),
         }
         return config;
     },

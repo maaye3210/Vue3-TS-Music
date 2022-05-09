@@ -14,12 +14,15 @@ import type {SearchHotDetail, SearchSuggest} from "@/models/search";
 import type {MvUrl} from "@/models/mv";
 import type {PlayListHot} from "@/models/playlist_hot";
 import type {UserProfile} from "@/models/user";
+import type {Account} from "@/models/user";
+import type {DjCatelist,DJBanner,DjRecommend,DjInfo} from "@/models/dj";
 
 export async function useLogin(phone: string, password: string) {
     return await http.get<{
         code: number,
         cookie: string,
         token: string,
+        account: Account
     }>("login/cellphone", {phone: phone, password: password})
 }
 
@@ -27,7 +30,8 @@ export async function useLoginStatus() {
     return await http.get<{
         data: {
             code: number,
-            profile: UserProfile
+            profile: UserProfile,
+            account: Account
         },
     }>("login/status")
 }
@@ -192,4 +196,20 @@ export async function usePlaylistHot() {
 export async function useTopPlaylistHighquality(params?: { limit?: number, before?: number, cat: string }) {
     return await http.get<{ playlists: PlayListDetail[], total: number, more: boolean, lasttime: number }>("top/playlist/highquality", params)
 
+}
+// 获取电台轮播
+export async function djBanner() {
+    const {data}=await http.get<{ data: DJBanner[]}>("/dj/banner")
+    console.log(data);
+    return data
+}
+// 获取电台分类
+export async function djCatelist() {
+    const {categories}=await http.get<{ categories: DjCatelist[]}>("/dj/catelist")
+    return categories.map(category=>{return {id:category.id,name:category.name}})
+}
+// 按类型获取电台
+export async function djByType(id:number) {
+    const {djRadios}=await http.get<{ djRadios: DjInfo[]}>("/dj/recommend/type",{type:id})
+    return djRadios
 }

@@ -22,7 +22,6 @@ import IconPark from "@/components/common/IconPark.vue";
 import PlayerVolumeSlider from "@/components/layout/footer/PlayerVolumeSlider.vue";
 import {usePlayerStore} from "@/stores/player";
 
-
 const {toggleLoop, loopType, next, prev, togglePlay, isPause, muted, volume} = toRefs(usePlayerStore())
 
 </script>
