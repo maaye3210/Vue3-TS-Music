@@ -108,6 +108,16 @@ const router = createRouter({
                         menu: 'dj',
                         title: '电台',
                         keepAlive: true,
+                    },
+                },
+                {
+                    path: 'alldj',
+                    name: 'alldj',
+                    component: () => import("@/views/dj/DjLists.vue"),
+                    meta: {
+                        menu: 'dj',
+                        title: '分类电台',
+                        keepAlive: true,
                     }
                 },
                 // mv

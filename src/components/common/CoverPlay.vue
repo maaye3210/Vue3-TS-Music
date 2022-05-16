@@ -40,7 +40,7 @@ defineProps<{
   }
 
   .play-count {
-    @apply absolute bottom-1 right-1 text-white text-xs bg-black bg-opacity-80 pl-2 pr-2 rounded-full pt-0.5 pb-0.5 flex items-center transition-all scale-90;
+    @apply absolute bottom-1 right-1 text-white text-xs bg-black bg-opacity-80 px-2 rounded-full py-0.5 flex items-center transition-all scale-90;
   }
 
   &:hover {

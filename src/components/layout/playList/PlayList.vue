@@ -15,6 +15,10 @@
         <el-scrollbar>
           <!-- dblclick双击事件 -->
           <PlayListSongItem v-for="song in playList" :key="song.id" :song="song" :active="song.id===id" @dblclick="play(song.id)"/>
+          <div class="flex justify-center">
+            <span v-if="!loadAllDjPage" class="text-sm text-center hover-text" @click="moreDj">加载更多</span>
+            <span v-else class="text-sm text-center" @click="moreDj">已加载全部</span>
+          </div>
         </el-scrollbar>
       </div>
     </div>
@@ -28,8 +32,9 @@ import {usePlayerStore} from "@/stores/player";
 import IconPark from "@/components/common/IconPark.vue";
 import PlayListSongItem from "@/components/layout/playList/PlayListSongItem.vue";
 
-const {showPlayList, playListCount, playList, id} = storeToRefs(usePlayerStore())
-const {play,clearPlayList} = usePlayerStore()
+const {showPlayList, playListCount, playList, id, loadAllDjPage} = storeToRefs(usePlayerStore())
+const {play,clearPlayList,moreDj} = usePlayerStore()
+
 
 </script>
 <style lang="scss">

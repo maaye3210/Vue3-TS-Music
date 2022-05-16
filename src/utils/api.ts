@@ -15,7 +15,7 @@ import type {MvUrl} from "@/models/mv";
 import type {PlayListHot} from "@/models/playlist_hot";
 import type {UserProfile} from "@/models/user";
 import type {Account} from "@/models/user";
-import type {DjCatelist,DJBanner,DjRecommend,DjInfo} from "@/models/dj";
+import type {DjCatelist,DJBanner,RecommendDjProgram,DjInfo,Recommend,userDjRecommend} from "@/models/dj";
 
 export async function useLogin(phone: string, password: string) {
     return await http.get<{
@@ -200,7 +200,6 @@ export async function useTopPlaylistHighquality(params?: { limit?: number, befor
 // 获取电台轮播
 export async function djBanner() {
     const {data}=await http.get<{ data: DJBanner[]}>("/dj/banner")
-    console.log(data);
     return data
 }
 // 获取电台分类
@@ -213,3 +212,17 @@ export async function djByType(id:number) {
     const {djRadios}=await http.get<{ djRadios: DjInfo[]}>("/dj/recommend/type",{type:id})
     return djRadios
 }
+// 获取个性推荐电台(展示在电台首页)
+export async function djRecommend() {
+    const {data}=await http.get<{ data: Recommend[]}>("/dj/personalize/recommend")
+    return data
+}
+export async function djProgram(rid:number,offset:number=0) {
+    const {programs}=await http.get<{ programs: RecommendDjProgram[]}>("/dj/program",{rid,limit:5,offset})
+    return programs
+}
+export async function userdjRecommend() {
+    const data=await http.get<userDjRecommend>("/dj/recommend")
+    return data
+}
+
