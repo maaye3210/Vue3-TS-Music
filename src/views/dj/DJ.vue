@@ -1,8 +1,10 @@
 <template>
 <!-- <DjBanner :banners="djBanners"></DjBanner> -->
-<DjRecommend></DjRecommend>
+<div class="px-5">
+  <DjRecommend></DjRecommend>
 
 <DjList v-for="djCatelist in djCatelist_5" :key="djCatelist.id" :info="djCatelist"></DjList>
+</div>
 </template>
 
 <script setup lang="ts">

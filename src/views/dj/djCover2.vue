@@ -7,13 +7,29 @@
       theme="filled"
       class="text-white play-icon opacity-0  hover:text-teal-400" :size="50"
       @click="onPlay(djInfo.id)"/>
+      <!-- <IconPark v-if="!djInfo.isCurrentPlay"
+      :icon="PlayOne"
+      theme="filled"
+      class="text-white play-icon opacity-0  hover:text-teal-400" :size="50"
+      @click="onPlay"/>
+      <IconPark v-else="!isCurrentPlay"
+      :icon="Pause"
+      theme="filled"
+      class="text-white play-icon opacity-0  hover:text-teal-400" :size="50"
+      @click="onPlay"/> -->
     </div>
+    <!-- <div v-if="showPlayCount" class="play-count">
+      <IconPark :icon="video?Play:Headset" class="mr-1" :size="12"/>
+      <text>{{ useNumberFormat(playCount || 0) }}
+      </text>
+    </div> -->
   </div>
 </template>
 
 <script setup lang="ts">
-import {PlayOne} from '@icon-park/vue-next'
+import {PlayOne, Play, Headset, Pause } from '@icon-park/vue-next'
 import type {DjInfo,djRadios} from '@/models/dj';
+import {useNumberFormat} from "@/utils/number";
 import IconPark from "@/components/common/IconPark.vue";
 
 defineProps<{
@@ -43,4 +59,3 @@ defineProps<{
   }
 }
 </style>
-

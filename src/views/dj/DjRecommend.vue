@@ -1,5 +1,5 @@
 <template>
-<div v-if="recommendDj.length>0"  class="overflow-hidden rounded-lg  xl:w-2/5 w-96 h-44 relative">
+<div v-if="recommendDj.length>0"  class="overflow-hidden rounded-lg  xl:w-1/3 w-96 h-44 relative">
   <div 
   class="w-full h-full  blur-lg flex bg-center" 
   :style="{ backgroundImage: 'url(' + recommendDj[programIndex].picUrl + ')'}"
@@ -8,7 +8,7 @@
   <div class="absolute inset-0 bg-gray-500 bg-opacity-10"></div>
   <div class="absolute inset-0 flex ">  
     <div>
-      <djCover class="w-32 h-32 rounded-lg m-6" :isCurrentPlay="djProgramid===recommendDj[programIndex].id&&isPlaying" :picUrl="recommendDj[programIndex].picUrl" @click="playProgram(programID)"></djCover>
+      <djCover class="w-32 h-32 rounded-lg m-6" :djInfo="recommendDj[programIndex]"  :onPlay="playProgram"></djCover>
     </div>
     <div class="m-2 flex-1 ">
       <div class="mt-4 ">
@@ -74,11 +74,6 @@ onMounted(async ()=>{
 
   }
   async function playProgram(rid:number){
-    if (djProgramid.value===recommendDj.value[programIndex.value].id) {
-      console.log('ok');
-      
-      togglePlay()
-    }
     await playDjProgram(rid)
   }
 </script>
