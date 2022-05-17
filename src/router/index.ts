@@ -110,6 +110,7 @@ const router = createRouter({
                         keepAlive: true,
                     },
                 },
+                // 电台分类
                 {
                     path: 'alldj',
                     name: 'alldj',
@@ -125,7 +126,7 @@ const router = createRouter({
                     path: Pages.mvDetail,
                     name: Pages.mvDetail,
                     component: () => import('@/views/mv/mvDetail.vue'),
-                }
+                },
             ],
         },
     ]

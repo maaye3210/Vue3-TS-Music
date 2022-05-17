@@ -8,7 +8,11 @@
   <div class="absolute inset-0 bg-gray-500 bg-opacity-10"></div>
   <div class="absolute inset-0 flex ">  
     <div>
-      <djCover class="w-32 h-32 rounded-lg m-6" :djInfo="recommendDj[programIndex]"  :onPlay="playProgram"></djCover>
+      <djCover class="w-32 h-32 rounded-lg m-6"  
+      :picUrl="recommendDj[programIndex].picUrl" 
+      :name="recommendDj[programIndex].name" 
+      :id="recommendDj[programIndex].id" 
+      :onPlay="playDjProgram"></djCover>
     </div>
     <div class="m-2 flex-1 ">
       <div class="mt-4 ">

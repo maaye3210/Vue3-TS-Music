@@ -1,11 +1,13 @@
 <template>
   <div class="flex player-song">
-    <img alt="" class="w-11 h-11 rounded" :src="song.al?.picUrl || OpticalDisk"/>
+    <img v-if="djPlaying" alt="" class="w-11 h-11 rounded" :src="song.al?.picUrl || OpticalDisk"/>
+    <img v-else alt="" class="w-11 h-11 rounded" :src="song.al?.picUrl || OpticalDisk"/>
     <div class="ml-2 text-xs flex flex-col justify-between">
       <div class="w-52 2xl:w-96 cursor-pointer truncate">
         <div class="flex">
           <div v-if="songUrl.freeTrialInfo?.end>0" class="bg-red-500  text-xs text-white rounded px-0.5 scale-75">试听</div>
-          <span>{{ song.name || '开源云音乐' }}</span>
+          <span v-if="djPlaying">{{ '电台' }}</span>
+          <span v-else>{{ song.name || '开源云音乐' }}</span>
           <span class="ml-2 text-dc">- {{ song.ar?.first().name || `SmallRuralDog` }}</span>
         </div>
       </div>
@@ -28,7 +30,7 @@ import {OpticalDisk} from '@/assets/img';
 import IconPark from "@/components/common/IconPark.vue";
 import {toRefs} from "vue";
 
-const {song, songUrl} = toRefs(usePlayerStore())
+const {song, songUrl, djPlaying} = toRefs(usePlayerStore())
 </script>
 
 <style lang="scss">

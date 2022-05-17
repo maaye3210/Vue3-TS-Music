@@ -2,8 +2,9 @@ import {defineStore, storeToRefs} from "pinia";
 import {useDetail, useSongUrl, djProgram } from "@/utils/api";
 import {onMounted, onUnmounted, toRefs, watch} from "vue";
 import type {Song} from "@/models/song";
+import type {RecommendDjProgram} from "@/models/dj";
 import type {SongUrl} from "@/models/song_url";
-
+// 将电台功能和音乐播放功能放在一起，耦合度太高，难以添加新功能
 const KEYS = {
     volume: 'PLAYER-VOLUME'
 }
@@ -31,6 +32,7 @@ export const usePlayerStore = defineStore({
         currentDjPage:0,
         loadAllDjPage:false,
         djId:0,//电台节目id，是返回的电台节目里表示电台的id
+        djProgram:{} as RecommendDjProgram,
         djProgramid:0
     }),
     getters: {
@@ -76,6 +78,7 @@ export const usePlayerStore = defineStore({
                 })
             }
             this.djProgramid=0
+            this.djProgram={} as RecommendDjProgram
             this.currentDjPage=0
             this.djPlaying=false
         },
@@ -114,6 +117,7 @@ export const usePlayerStore = defineStore({
             this.djPlaying=false
             this.djId=0
             this.djProgramid=0
+            this.djProgram={} as RecommendDjProgram
             this.loadAllDjPage=false
             this.audio.load();
             setTimeout(() => {
@@ -142,15 +146,16 @@ export const usePlayerStore = defineStore({
             console.log('电台节目ID:',id);
             if (id == this.djProgramid) return;
             this.clearPlayList()
-            this.djProgramid=id
             // 因为电台节目没有给出确定的url，需要自己用id查询
             const res= await djProgram(id)
+            this.djProgramid=id
+            this.djProgram=res[0]
             const djList=[] as Song[]
             for (let i = 0; i < res.length; i++) {
                 djList.push(await useDetail(res[i].mainSong.id)) 
             }
             this.pushDjList(false,...djList)
-            await this.play(res[0].mainSong.id)
+            await this.play(this.djProgram.mainSong.id)
         },
         async moreDj(){
             const res= await djProgram(this.djProgramid, (this.currentDjPage+1)*5)
@@ -164,7 +169,6 @@ export const usePlayerStore = defineStore({
             }else{
                 this.pushDjList(false,...djList)
             }
-            
         },
         //播放结束
         playEnd() {
@@ -184,11 +188,13 @@ export const usePlayerStore = defineStore({
         async songDetail() {
 
             this.song = await useDetail(this.id)
+            console.log(this.song.djId);
+            
             if (this.song.djId!=0) {
                 this.pushDjList(false, this.song)
             }else{
                 // 如果是电台歌曲，一般不需要加入列表，因为已经加入过
-                // this.pushPlayList(false, this.song)
+                this.pushPlayList(false, this.song)
             }
         },
         //重新播放

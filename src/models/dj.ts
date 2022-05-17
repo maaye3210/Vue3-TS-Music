@@ -342,3 +342,10 @@ export interface userDjRecommend{
 	name:string
 	djRadios:djRadios[]
 }
+export interface djHourTopList{
+	lastRank: number
+	program: RecommendDjProgram
+	programFeeType: number
+	rank: number
+	score: number
+}

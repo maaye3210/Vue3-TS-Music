@@ -1,25 +1,35 @@
 <template>
 <!-- DJ封面 -->
-  <div class="djcover-play-image">
-    <el-image :src="djInfo.picUrl" :alt="djInfo.name" class=""/>
+  <div class="djcover-play-image aspect-square">
+    <el-image :src="picUrl" :alt="name" class="w-full bg-gray-50 object-cover"/>
     <div class="mask flex justify-center items-center">
       <IconPark :icon="PlayOne"
       theme="filled"
       class="text-white play-icon opacity-0  hover:text-teal-400" :size="50"
-      @click="onPlay(djInfo.id)"/>
+      @click="emitOnPlay(id, program)"/>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import {PlayOne} from '@icon-park/vue-next'
-import type {DjInfo,djRadios} from '@/models/dj';
 import IconPark from "@/components/common/IconPark.vue";
+import type { RecommendDjProgram } from "@/models/dj";
 
-defineProps<{
-  djInfo: DjInfo|djRadios
-  onPlay: (rid:number) => void
+const props = defineProps<{
+  picUrl : string
+  name : string
+  id : number
+  program?: RecommendDjProgram
+  onPlay: (rid:number, program?:RecommendDjProgram|undefined) => void
 }>()
+const emitOnPlay=(id:number, program:RecommendDjProgram|undefined)=>{
+  if (program) {
+    props.onPlay(id, program)
+  }else{
+    props.onPlay(id)
+  }
+}
 </script>
 
 <style lang="scss">

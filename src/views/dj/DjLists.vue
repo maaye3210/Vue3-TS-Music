@@ -3,7 +3,7 @@
 <div class="py-5 text-xl ">{{currentPage.currentName}}电台</div>
 <div class="gap-5  grid grid-flow-row grid-cols-3 lg:grid-cols-5 2xl:grid-cols-5">
   <div v-for="djInfo in currentPage.djInfoList" :key="djInfo.id" class="item-1">
-    <djCover  :djInfo="djInfo"  :onPlay="playDjProgram"></djCover>
+    <djCover  :picUrl="djInfo.picUrl" :name="djInfo.name" :id="djInfo.id" :onPlay="playDjProgram"></djCover>
     <div class="mt-2 text-xs text-main  leading-5 ">{{ djInfo.name }}</div>
   </div>
 </div>

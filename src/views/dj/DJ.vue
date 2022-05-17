@@ -2,8 +2,8 @@
 <!-- <DjBanner :banners="djBanners"></DjBanner> -->
 <div class="px-5">
   <DjRecommend></DjRecommend>
-
-<DjList v-for="djCatelist in djCatelist_5" :key="djCatelist.id" :info="djCatelist"></DjList>
+  <TopHour ></TopHour>
+  <DjList v-for="djCatelist in djCatelist_5" :key="djCatelist.id" :info="djCatelist"></DjList>
 </div>
 </template>
 
@@ -11,8 +11,8 @@
 import { onMounted, reactive, computed } from "vue";
 import { useDJStore } from "@/stores/dj";
 import DjList from '@/views/dj/DjList.vue';
+import TopHour from '@/views/dj/TopHour.vue';
 import {useRouter} from "vue-router";
-import DjBanner from "@/views/dj/DjBanner.vue";
 import DjRecommend from "@/views/dj/DjRecommend.vue";
 import { storeToRefs } from 'pinia'
 
