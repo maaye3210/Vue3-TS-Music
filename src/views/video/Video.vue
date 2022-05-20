@@ -34,7 +34,7 @@
       </div>
     </div>
 <!--视频列表部分-->
-    <div class="grid grid-flow-row grid-cols-3 gap-5 mt-5">
+    <div class="grid grid-flow-row grid-cols-4 gap-5 mt-5">
       <div v-for="{data} in videoList" :key="data.vid">
         <CoverPlay :pic-url="data.coverUrl" video/>
         <div class="text-xs mt-3 truncate">{{ data.title }}</div>

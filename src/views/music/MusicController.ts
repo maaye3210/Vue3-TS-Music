@@ -14,7 +14,7 @@ export function useMusicMenu() {
         },
         {
             label: '有声电台',
-            name: 'dt',
+            name: 'musicDj',
         },
         {
             label: '排行',
@@ -30,7 +30,7 @@ export function useMusicMenu() {
         },
         {
             label: '数字专辑',
-            name: 'zj',
+            name: 'musicAlbum',
         }
     ];
 

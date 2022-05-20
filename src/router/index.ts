@@ -36,12 +36,13 @@ const router = createRouter({
                             component: () => import("@/views/music/picked/Picked.vue"),
                             meta: {
                                 menu: 'music',
+                                title: '精选',
                                 keepAlive: true,
                             }
                         },
                         {
                             path: 'toplist',
-                            name: 'toplist',
+                            name: '排行',
                             component: () => import("@/views/music/toplist/TopList.vue"),
                             meta: {
                                 menu: 'music',
@@ -55,6 +56,26 @@ const router = createRouter({
                             meta: {
                                 menu: 'music',
                                 title: '歌手',
+                                keepAlive: true,
+                            }
+                        },
+                        {
+                            path: 'dj',
+                            name: 'musicDj',
+                            component: () => import('@/views/music/dj/Dj.vue'),
+                            meta: {
+                                menu: 'music',
+                                title: '有声电台',
+                                keepAlive: true,
+                            }
+                        },
+                        {
+                            path: 'album',
+                            name: 'musicAlbum',
+                            component: () => import('@/views/music/album/album.vue'),
+                            meta: {
+                                menu: 'music',
+                                title: '数字专辑',
                                 keepAlive: true,
                             }
                         },
@@ -126,6 +147,30 @@ const router = createRouter({
                     path: Pages.mvDetail,
                     name: Pages.mvDetail,
                     component: () => import('@/views/mv/mvDetail.vue'),
+                },
+                // 我喜欢
+                {
+                    path: 'love',
+                    name: 'love',
+                    component: () => import('@/views/love/love.vue'),
+                },
+                // 本地歌曲
+                {
+                    path: 'local',
+                    name: 'local',
+                    component: () => import('@/views/local/local.vue'),
+                },
+                // 下载歌曲
+                {
+                    path: 'download',
+                    name: 'download',
+                    component: () => import('@/views/download/download.vue'),
+                },
+                // 最近播放
+                {
+                    path: 'recently',
+                    name: 'recently',
+                    component: () => import('@/views/recently/recently.vue'),
                 },
             ],
         },

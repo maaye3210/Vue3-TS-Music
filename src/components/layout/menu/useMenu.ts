@@ -91,15 +91,7 @@ export function userMenu() {
     );
 
     const click = async (menu: IMenu) => {
-        try {
-            await router.push({name: menu.key, replace: true,})
-        }catch (e){
-            console.log(e)
-            ElMessage({
-                message: `${menu.name}模块正在开发ing...过段时间再来看吧 ^_^ ~`,
-                type: 'success'
-            })
-        }
+        await router.push({name: menu.key, replace: true,})
     };
 
     return {
