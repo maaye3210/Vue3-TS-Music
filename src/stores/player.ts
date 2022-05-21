@@ -1,5 +1,5 @@
 import {defineStore, storeToRefs} from "pinia";
-import {useDetail, useSongUrl, djProgram } from "@/utils/api";
+import {useDetail, useSongUrl, djProgram, useDjDetail } from "@/utils/api";
 import {onMounted, onUnmounted, toRefs, watch} from "vue";
 import type {Song} from "@/models/song";
 import type {RecommendDjProgram} from "@/models/dj";
@@ -8,7 +8,7 @@ import type {SongUrl} from "@/models/song_url";
 const KEYS = {
     volume: 'PLAYER-VOLUME'
 }
-
+// tip:如何同步电台歌曲和电台节目——将电台节目储存在对应的歌曲上
 export const usePlayerStore = defineStore({
     id: "player",
     state: () => ({
@@ -39,9 +39,7 @@ export const usePlayerStore = defineStore({
         playListCount: state => {
             return state.playList.length;
         },
-        thisIndex: state => {
-            return state.playList.findIndex(song => song.id === state.id);
-        },
+        thisIndex: state => state.playList.findIndex(song => song.id === state.id|| song.djProgram?.id === state.id),
         nextSong(state): Song {
             const {thisIndex, playListCount} = this
             if (thisIndex === playListCount - 1) {
@@ -82,23 +80,21 @@ export const usePlayerStore = defineStore({
             this.currentTime = 0;
             this.playList = [] as Song[];
             this.showPlayList = false;
-            this.djPlaying=false
-            this.djId=0
-            this.djProgramid=0
-            this.djProgram={} as RecommendDjProgram
-            this.loadAllDjPage=false
-            this.audio.load();
+            this.djPlaying = false
+            this.djId = 0
+            this.djProgramid = 0
+            this.djProgram = {} as RecommendDjProgram
+            this.loadAllDjPage = false
+            this.audio.load()
             setTimeout(() => {
                 this.duration = 0;
             }, 500)
         },
         async play(id: number) {
-            console.log('歌曲ID:',id);
-            if (id == this.id) return;
             this.isPlaying = false
             const data = await useSongUrl(id)
             this.audio.src = data.url;
-            console.log('歌曲url:',data.url);
+            console.log('歌曲ID:',id,'歌曲url:',data.url);
             this.audio.play().then(res => {
                 this.isPlaying = true
                 this.isPause = false
@@ -110,18 +106,35 @@ export const usePlayerStore = defineStore({
                 console.log(res)
             })
         },
-        // 以下为普通歌曲用到的逻辑
         async songDetail() {
-
             this.song = await useDetail(this.id)
-            console.log(this.song.djId);
+            console.log(this.song);
             
-            if (this.song.djId!=0) {
+            console.log('电台id',this.song.djId);
+            // 一般不需要加入列表，因为已经加入过，但是有时会播放单曲，直接调用这个函数，所以需要再添加到播放列表
+            if (this.song.djId != 0) {
+                this.song.djProgram=await useDjDetail(this.id)
                 this.pushDjList(false, this.song)
             }else{
-                // 如果是电台歌曲，一般不需要加入列表，因为已经加入过
                 this.pushPlayList(false, this.song)
             }
+        },
+        //播放列表里面添加音乐
+        pushPlayList(replace: boolean, ...list: Song[]) {
+            if (replace||this.djPlaying) {
+                this.playList = list;
+            }else{
+                list.forEach(song => {
+                    if (this.playList.filter(s => s.id == song.id).length <= 0) {
+                        this.playList.push(song)
+                        console.log('添加普通歌曲');
+                    }
+                })
+            }
+            this.djProgramid=0
+            this.djProgram={} as RecommendDjProgram
+            this.currentDjPage=0
+            this.djPlaying=false
         },
 
 
@@ -129,26 +142,51 @@ export const usePlayerStore = defineStore({
         // 以下为电台用到的逻辑
         // 播放电台
         async playDjProgram(id: number) {
-            console.log('电台节目ID:',id);
             if (id == this.djProgramid) return;
             this.clearPlayList()
             // 因为电台节目没有给出确定的url，需要自己用id查询
             const res= await djProgram(id)
+            console.log('电台ID:',id,'电台节目',res)
             this.djProgramid=id
             this.djProgram=res[0]
             const djList=[] as Song[]
             for (let i = 0; i < res.length; i++) {
-                djList.push(await useDetail(res[i].mainSong.id)) 
+                const data = await useDetail(res[i].mainSong.id)
+                data.djProgram=res[i]
+                djList.push(data)
             }
             this.pushDjList(false,...djList)
-            await this.play(this.djProgram.mainSong.id)
+            await this.playDj(this.djProgram.id)
+        },
+        async playDj(id: number) {
+            console.log(id,this.id);
+            
+            if (id == this.id) return;
+            this.isPlaying = false
+            const detail = await useDjDetail(id)
+            const data = await useSongUrl(detail.mainSong.id)
+            this.audio.src = data.url;
+            console.log('节目ID:', id, '节目url:',data.url);
+            this.audio.play().then(res => {
+                this.isPlaying = true
+                this.isPause = false
+                this.songUrl = data
+                this.url = data.url
+                this.djProgram = detail
+                this.id = detail.id
+                this.djDetail()
+            }).catch(res => {
+                console.log(res)
+            })
         },
         // 异步加载更多电台节目
         async moreDj(){
             const res= await djProgram(this.djProgramid, (this.currentDjPage+1)*5)
             const djList=[] as Song[]
             for (let i = 0; i < res.length; i++) {
-                djList.push(await useDetail(res[i].mainSong.id)) 
+                const data=await useDetail(res[i].mainSong.id)
+                data.djProgram=res[i]
+                djList.push(data) 
             }
             this.currentDjPage++
             if (djList.length===0) {
@@ -168,31 +206,27 @@ export const usePlayerStore = defineStore({
             }else{
                 // 否则添加在队尾
                 list.forEach(song => {
-                if (this.playList.filter(s => s.id == song.id).length <= 0) {
-                    this.playList.push(song)
-                    console.log('在队尾添加了',song.name);
-                }
-            })
-            }
-            this.djPlaying=true
-        },
-        //播放列表里面添加音乐
-        pushPlayList(replace: boolean, ...list: Song[]) {
-            console.log('添加普通歌曲');
-            if (replace||this.djPlaying) {
-                this.playList = list;
-            }else{
-                list.forEach(song => {
                     if (this.playList.filter(s => s.id == song.id).length <= 0) {
                         this.playList.push(song)
+                        console.log('在队尾添加了',song.name);
                     }
                 })
             }
-            this.djProgramid=0
-            this.djProgram={} as RecommendDjProgram
-            this.currentDjPage=0
-            this.djPlaying=false
+            this.djPlaying=true
         },
+        async djDetail() {
+            const detail = await useDjDetail(this.id)
+            this.song = await useDetail(detail.mainSong.id)
+            this.song.djProgram=detail
+            console.log('电台id',this.song.djId);
+            // 一般不需要加入列表，因为已经加入过，但是有时会播放单曲，直接调用这个函数，所以需要再添加到播放列表
+            if (this.song.djId != 0) {
+                this.pushDjList(false, this.song)
+            }else{
+                this.pushPlayList(false, this.song)
+            }
+        },
+
         
         
 
@@ -203,11 +237,16 @@ export const usePlayerStore = defineStore({
             if (this.loopType === 2) {
                 this.randomPlay()
             } else {
-                if (this.djPlaying&&this.thisIndex>=this.playListCount-2) {
-                    console.log('加载了更多电台节目');
-                    this.moreDj()
+                if (this.djPlaying) {
+                    if (this.thisIndex>=this.playListCount-2) {
+                        console.log('加载了更多电台节目');
+                        this.moreDj()
+                    }
+                    console.log(this.nextSong.djProgram);
+                    this.playDj((this.nextSong.djProgram as RecommendDjProgram).id)
+                }else{
+                    this.play(this.nextSong.id)
                 }
-                this.play(this.nextSong.id)
             }
         },
         //上一曲

@@ -14,10 +14,12 @@
       <div class="flex-1 overflow-hidden">
         <el-scrollbar>
           <!-- dblclick双击事件 -->
-          <PlayListSongItem v-for="song in playList" :key="song.id" :song="song" :active="song.id===id" @dblclick="play(song.id)"/>
+          <PlayListSongItem v-for="song in playList" :key="song.id" :song="song" :active="song.id===id" :dj-playing="djPlaying" @dblclick="handleClick(song)"/>
           <div class="flex justify-center">
-            <span v-if="!loadAllDjPage" class="text-sm text-center hover-text" @click="moreDj">加载更多</span>
-            <span v-else class="text-sm text-center  cursor-pointer" @click="moreDj">已加载全部</span>
+            <span v-if="djPlaying">
+              <span v-if="!loadAllDjPage" class="text-sm text-center hover-text" @click="moreDj">加载更多</span>
+              <span v-else class="text-sm text-center  cursor-pointer" @click="moreDj">已加载全部</span>
+            </span>
           </div>
         </el-scrollbar>
       </div>
@@ -31,10 +33,16 @@ import {Delete} from "@icon-park/vue-next";
 import {usePlayerStore} from "@/stores/player";
 import IconPark from "@/components/common/IconPark.vue";
 import PlayListSongItem from "@/components/layout/playList/PlayListSongItem.vue";
+import type {Song} from "@/models/song";
 
-const {showPlayList, playListCount, playList, id, loadAllDjPage} = storeToRefs(usePlayerStore())
-const {play,clearPlayList,moreDj} = usePlayerStore()
-
+const {showPlayList, playListCount, playList, id, loadAllDjPage, djPlaying} = storeToRefs(usePlayerStore())
+const {play,clearPlayList,moreDj,playDj} = usePlayerStore()
+const handleClick=(song:Song)=>{
+  if (djPlaying) {
+    playDj((song.djProgram?.id) as number)
+  }
+  play(song.id)
+}
 
 </script>
 <style lang="scss">

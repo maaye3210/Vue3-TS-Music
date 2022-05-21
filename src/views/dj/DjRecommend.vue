@@ -38,24 +38,20 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, toRefs } from "vue";
-import { useRouter } from "vue-router";
-import type { djRadios, RecommendDjProgram } from "@/models/dj";
-import { userdjRecommend,djProgram } from "@/utils/api";
+import { onMounted, ref } from "vue";
+import type { djRadios } from "@/models/dj";
+import { userdjRecommend } from "@/utils/api";
 import { GoEnd, Like, Unlike , Comment, Refresh} from '@icon-park/vue-next'
 import IconPark from "@/components/common/IconPark.vue";
 import djCover from '@/views/dj/djCover.vue';
 import { usePlayerStore } from '@/stores/player';
-const router= useRouter
 
 const recommendDj=ref<djRadios[]>([])
-const recommendDjProgram=ref<RecommendDjProgram[]>([])
 const programIndex=ref(0)
 const programSum=ref(0)
 const name=ref('')
 const programID=ref(0)
-const { play, playDjProgram, next, togglePlay }=usePlayerStore()
-const { currentDjPage, isPlaying, djProgramid }=toRefs(usePlayerStore())
+const { playDjProgram, next }=usePlayerStore()
 onMounted(async ()=>{
   await getRecommendList()
   })
@@ -73,11 +69,5 @@ onMounted(async ()=>{
     programIndex.value<programSum.value-1?programIndex.value++:programIndex.value=0
     programID.value=recommendDj.value[programIndex.value].id
     // await playProgram()
-  }
-  function nextProgram(){
-
-  }
-  async function playProgram(rid:number){
-    await playDjProgram(rid)
   }
 </script>

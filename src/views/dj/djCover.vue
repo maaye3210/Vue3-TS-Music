@@ -6,7 +6,7 @@
       <IconPark :icon="PlayOne"
       theme="filled"
       class="text-white play-icon opacity-0  hover:text-teal-400" :size="50"
-      @click="emitOnPlay(id, program)"/>
+      @click="emitOnPlay()"/>
     </div>
   </div>
 </template>
@@ -20,14 +20,14 @@ const props = defineProps<{
   picUrl : string
   name : string
   id : number
-  program?: RecommendDjProgram
-  onPlay: (rid:number, program?:RecommendDjProgram|undefined) => void
+  programid?: number
+  onPlay: (id:number) => void
 }>()
-const emitOnPlay=(id:number, program:RecommendDjProgram|undefined)=>{
-  if (program) {
-    props.onPlay(id, program)
+const emitOnPlay=()=>{
+  if (props.programid) {
+    props.onPlay(props.programid)
   }else{
-    props.onPlay(id)
+    props.onPlay(props.id)
   }
 }
 </script>

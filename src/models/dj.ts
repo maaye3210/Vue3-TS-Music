@@ -175,6 +175,7 @@ export interface Recommend {
 }
 export interface RecommendDjProgram{
 	alg: object
+	artists:Artist[]
 	auditDisPlayStatus: number
 	auditStatus: number
 	authDTO: object

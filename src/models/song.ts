@@ -1,4 +1,7 @@
+import type { Artist } from '@/models/artist';
+import type { RecommendDjProgram } from '@/models/dj';
 export interface Song {
+    djProgram?: RecommendDjProgram
     name: string;
     id: number;
     pst: number;
@@ -47,7 +50,7 @@ export interface Song {
 export interface SongAr {
     id: number;
     name: string;
-    tns: any[];
+    tns?: any[];
     alias: any[];
 }
 

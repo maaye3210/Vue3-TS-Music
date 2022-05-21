@@ -1,5 +1,22 @@
 <template>
-  <div class="flex p-2.5 border-b border-b-stone-50 dark:border-b-stone-800 hover-bg-view" :class="{'active':active}">
+  <div v-if="djPlaying" class="flex p-2.5 border-b border-b-stone-50 dark:border-b-stone-800 hover-bg-view" :class="{'active':active}">
+    <el-image lazy :src="song.djProgram?.coverUrl+'?param=80y80'" class="aspect-square w-10 flex-shrink-0"/>
+    <div class="ml-2 text-xs h-10 flex flex-1 w-1">
+      <div class="flex flex-1 flex-col justify-between truncate">
+        <div class="flex">
+          <div class="truncate">{{ song.djProgram?.name }}</div>
+          <IconPark v-if="song.mv>0" class="ml-2 text-orange-400 cursor-pointer" size="16" :icon="Youtube" @click="router.push({name:Pages.mvDetail,query:{id:song.mv}})"/>
+        </div>
+        <div class="truncate">{{ song.ar.first().name }}</div>
+      </div>
+      <div class="flex-shrink-0 ml-5 flex items-center justify-end">
+        <div class="truncate">
+          <small>{{ useFormatDuring(song.dt / 1000) }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div v-else class="flex p-2.5 border-b border-b-stone-50 dark:border-b-stone-800 hover-bg-view" :class="{'active':active}">
     <el-image lazy :src="song.al?.picUrl+'?param=80y80'" class="aspect-square w-10 flex-shrink-0"/>
     <div class="ml-2 text-xs h-10 flex flex-1 w-1">
       <div class="flex flex-1 flex-col justify-between truncate">
@@ -29,7 +46,8 @@ import {Pages} from "@/router/pages";
 const router = useRouter()
 defineProps<{
   song: Song,
-  active: boolean
+  active: boolean,
+  djPlaying?: boolean
 }>()
 </script>
 <style lang="scss" scoped>

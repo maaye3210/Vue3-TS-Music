@@ -42,7 +42,8 @@ export async function useSongUrl(id: number) {
 }
 
 export async function useDetail(id: number) {
-    const {songs} = await http.get<{ songs: Song[] }>('/song/detail', {ids: id})
+    const res = await http.get<{ songs: Song[] }>('/song/detail', {ids: id})
+    const {songs} = res
     return songs.first()
 }
 
@@ -221,6 +222,10 @@ export async function djProgram(rid:number,offset:number=0) {
     const {programs}=await http.get<{ programs: RecommendDjProgram[]}>("/dj/program",{rid,limit:5,offset})
     return programs
 }
+export async function useDjDetail(id:number) {
+    const {program}=await http.get<{ program: RecommendDjProgram }>("/dj/program/detail",{id})
+    return program
+}
 export async function userdjRecommend() {
     const data=await http.get<userDjRecommend>("/dj/recommend")
     return data
@@ -228,7 +233,6 @@ export async function userdjRecommend() {
 // /dj/program/toplist/hours
 export async function djToplist(limit:number) {
     const {data:{list:arr}}=await http.get<{data:{list:djHourTopList[]}}>("/dj/program/toplist/hours",{limit})
-    console.log(arr);
     return arr
 }
 

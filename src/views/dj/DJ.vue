@@ -18,7 +18,7 @@ import { storeToRefs } from 'pinia'
 
 const router= useRouter
 const {djCatelists,djBanners}=storeToRefs(useDJStore())
-const {getDjCatelists,getDjBanner,getRecommendList}=useDJStore()
+const {getDjCatelists,getDjBanner}=useDJStore()
 const djCatelist_5= computed(() => djCatelists.value.slice(0,5))
 
 onMounted(async ()=>{

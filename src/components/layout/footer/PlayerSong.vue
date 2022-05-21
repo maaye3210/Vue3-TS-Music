@@ -1,14 +1,13 @@
 <template>
   <div class="flex player-song">
-    <img v-if="djPlaying" alt="" class="w-11 h-11 rounded" :src="song.al?.picUrl || OpticalDisk"/>
+    <img v-if="djPlaying" alt="" class="w-11 h-11 rounded" :src="song.djProgram?.coverUrl || OpticalDisk"/>
     <img v-else alt="" class="w-11 h-11 rounded" :src="song.al?.picUrl || OpticalDisk"/>
     <div class="ml-2 text-xs flex flex-col justify-between">
       <div class="w-52 2xl:w-96 cursor-pointer truncate">
         <div class="flex">
           <div v-if="songUrl.freeTrialInfo?.end>0" class="bg-red-500  text-xs text-white rounded px-0.5 scale-75">试听</div>
-          <span v-if="djPlaying">{{ '电台' }}</span>
-          <span v-else>{{ song.name || '开源云音乐' }}</span>
-          <span class="ml-2 text-dc">- {{ song.ar?.first().name || `SmallRuralDog` }}</span>
+          <span v-else>{{ !djPlaying?song.name:song.djProgram?.name || '开源云音乐' }}</span>
+          <span class="ml-2 text-dc">- {{ !djPlaying?song.ar?.first().name:song.djProgram?.mainSong.artists.first().name || `SmallRuralDog` }}</span>
         </div>
       </div>
       <div class="flex gap-x-3 text-main">

@@ -14,15 +14,11 @@ import { onMounted,reactive} from "vue";
 import { useDJStore } from "@/stores/dj";
 import ListHot from '@/components/common/ListHot.vue';
 import djCover from "@/views/dj/djCover.vue";
-
-import {useRouter} from "vue-router";
 import type { CurrentPage } from "@/models/dj";
 import { djByType} from "@/utils/api";
 import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '@/stores/player';
 const { playDjProgram }=usePlayerStore()
-const router= useRouter
-const {}=useDJStore()
 const {djCatelists}=storeToRefs(useDJStore())
 const {getDjCatelists,getDjBanner}=useDJStore()
 const currentPage=reactive({} as CurrentPage)
@@ -33,9 +29,8 @@ onMounted(async ()=>{
   currentPage.currentId= djCatelists.value[0].id
   await catChange({id:currentPage.currentId,name:currentPage.currentName})
   })
+  
   async function catChange(cat:{id:number,name:string}) {
-    console.log('cat',cat,currentPage);
     currentPage.djInfoList= await djByType(cat.id)
-    console.log(currentPage)
   }
 </script>
