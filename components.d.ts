@@ -5,6 +5,7 @@
 declare module 'vue' {
   export interface GlobalComponents {
     Banner: typeof import('./src/components/common/Banner.vue')['default']
+    Controller: typeof import('./src/components/layout/lyric/Controller.vue')['default']
     CoverPlay: typeof import('./src/components/common/CoverPlay.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']
     ElAlert: typeof import('element-plus/es')['ElAlert']
@@ -14,6 +15,7 @@ declare module 'vue' {
     ElCheckTag: typeof import('element-plus/es')['ElCheckTag']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
+    ElEmpty: typeof import('element-plus/es')['ElEmpty']
     ElImage: typeof import('element-plus/es')['ElImage']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElPopover: typeof import('element-plus/es')['ElPopover']
@@ -26,6 +28,8 @@ declare module 'vue' {
     Header: typeof import('./src/components/layout/header/Header.vue')['default']
     IconPark: typeof import('./src/components/common/IconPark.vue')['default']
     ListHot: typeof import('./src/components/common/ListHot.vue')['default']
+    Loading: typeof import('element-plus/es')['ElLoadingDirective']
+    Lyric: typeof import('./src/components/layout/lyric/lyric.vue')['default']
     Menu: typeof import('./src/components/layout/menu/Menu.vue')['default']
     MenuList: typeof import('./src/components/layout/menu/MenuList.vue')['default']
     MoreText: typeof import('./src/components/common/MoreText.vue')['default']

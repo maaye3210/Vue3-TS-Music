@@ -16,6 +16,7 @@ import type {PlayListHot} from "@/models/playlist_hot";
 import type {UserProfile} from "@/models/user";
 import type {Account} from "@/models/user";
 import type {DjCatelist,DJBanner,RecommendDjProgram,DjInfo,Recommend,userDjRecommend,djHourTopList} from "@/models/dj";
+import type {Lyrics} from '@/models/lyric';
 
 export async function useLogin(phone: string, password: string) {
     return await http.get<{
@@ -235,4 +236,7 @@ export async function djToplist(limit:number) {
     const {data:{list:arr}}=await http.get<{data:{list:djHourTopList[]}}>("/dj/program/toplist/hours",{limit})
     return arr
 }
-
+// /lyric
+export async function lyric(id:number) {
+    return await http.get<Lyrics>("/lyric",{id})
+}

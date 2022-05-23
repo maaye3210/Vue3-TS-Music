@@ -28,3 +28,9 @@ export function useFormatDuring(during: number) {
     return ii + ':' + ss;
 
 }
+// 字符转换成秒数
+export function stringToNumber(string: string) {
+    const time = string.split(":");
+    const num:number = parseInt(time[0]) * 60 + parseFloat(time[1]) * 1
+    return num
+}

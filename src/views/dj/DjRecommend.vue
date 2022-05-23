@@ -1,5 +1,5 @@
 <template>
-<div v-if="recommendDj.length>0"  class="overflow-hidden rounded-lg  xl:w-1/3 w-96 h-44 relative">
+<div v-if="recommendDj.length>0"  class="overflow-hidden rounded-lg  xl:w-128 sm:w-112 h-44 relative">
   <div 
   class="w-full h-full  blur-lg flex bg-center" 
   :style="{ backgroundImage: 'url(' + recommendDj[programIndex].picUrl + ')'}"

@@ -1,6 +1,7 @@
 import {defineStore, storeToRefs} from "pinia";
-import {useDetail, useSongUrl, djProgram, useDjDetail } from "@/utils/api";
+import {useDetail, useSongUrl, djProgram, useDjDetail, lyric } from "@/utils/api";
 import {onMounted, onUnmounted, toRefs, watch} from "vue";
+import {useLyricStore} from '@/stores/lyric';
 import type {Song} from "@/models/song";
 import type {RecommendDjProgram} from "@/models/dj";
 import type {SongUrl} from "@/models/song_url";
@@ -8,6 +9,7 @@ import type {SongUrl} from "@/models/song_url";
 const KEYS = {
     volume: 'PLAYER-VOLUME'
 }
+
 // tip:如何同步电台歌曲和电台节目——将电台节目储存在对应的歌曲上
 export const usePlayerStore = defineStore({
     id: "player",
@@ -107,17 +109,13 @@ export const usePlayerStore = defineStore({
             })
         },
         async songDetail() {
+            const {lyrics}=storeToRefs(useLyricStore())
             this.song = await useDetail(this.id)
             console.log(this.song);
-            
+            lyrics.value = await lyric(this.song.id)
             console.log('电台id',this.song.djId);
             // 一般不需要加入列表，因为已经加入过，但是有时会播放单曲，直接调用这个函数，所以需要再添加到播放列表
-            if (this.song.djId != 0) {
-                this.song.djProgram=await useDjDetail(this.id)
-                this.pushDjList(false, this.song)
-            }else{
-                this.pushPlayList(false, this.song)
-            }
+            this.pushPlayList(false, this.song)
         },
         //播放列表里面添加音乐
         pushPlayList(replace: boolean, ...list: Song[]) {
@@ -222,8 +220,6 @@ export const usePlayerStore = defineStore({
             // 一般不需要加入列表，因为已经加入过，但是有时会播放单曲，直接调用这个函数，所以需要再添加到播放列表
             if (this.song.djId != 0) {
                 this.pushDjList(false, this.song)
-            }else{
-                this.pushPlayList(false, this.song)
             }
         },
 
@@ -335,15 +331,20 @@ export const usePlayerStore = defineStore({
             this.currentTime = val
             this.sliderInput = false;
             this.audio.currentTime = val
+            console.log('拖动到',val);
         },
         //播放时间拖动中
         onSliderInput(val: number) {
+            console.log('拖动');
             this.sliderInput = true;
         },
         //定时器
         interval() {
+            const {checkLyric}=useLyricStore()
             if (this.isPlaying && !this.sliderInput) {
-                this.currentTime = parseInt(this.audio.currentTime.toString());
+                const time = parseFloat(this.audio.currentTime.toString());
+                checkLyric(time)
+                this.currentTime=parseInt(this.audio.currentTime.toString())
                 this.duration = parseInt(this.audio.duration.toString());
                 this.ended = this.audio.ended
             }
@@ -367,7 +368,7 @@ export const userPlayerInit = () => {
     onMounted(() => {
         init()
         console.log('启动歌曲定时器')
-        timer = setInterval(interval, 1000)
+        timer = setInterval(interval, 100)
         
     })
     //清除定时器
@@ -375,4 +376,7 @@ export const userPlayerInit = () => {
         console.log('清除歌曲定时器')
         clearInterval(timer)
     })
+    const getTime=()=>{
+        return timer
+    }
 }

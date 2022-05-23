@@ -1,13 +1,13 @@
 <template>
   <div v-if="djPlaying" class="flex p-2.5 border-b border-b-stone-50 dark:border-b-stone-800 hover-bg-view" :class="{'active':active}">
-    <el-image lazy :src="song.djProgram?.coverUrl+'?param=80y80'" class="aspect-square w-10 flex-shrink-0"/>
+    <el-image lazy :src="song.djProgram?.coverUrl" class="aspect-square w-10 flex-shrink-0"/>
     <div class="ml-2 text-xs h-10 flex flex-1 w-1">
       <div class="flex flex-1 flex-col justify-between truncate">
         <div class="flex">
           <div class="truncate">{{ song.djProgram?.name }}</div>
           <IconPark v-if="song.mv>0" class="ml-2 text-orange-400 cursor-pointer" size="16" :icon="Youtube" @click="router.push({name:Pages.mvDetail,query:{id:song.mv}})"/>
         </div>
-        <div class="truncate">{{ song.ar.first().name }}</div>
+        <div class="truncate">{{ song.djProgram?.mainSong.artists.first().name }}</div>
       </div>
       <div class="flex-shrink-0 ml-5 flex items-center justify-end">
         <div class="truncate">
@@ -44,11 +44,12 @@ import {useFormatDuring} from '@/utils/number'
 import {Pages} from "@/router/pages";
 
 const router = useRouter()
-defineProps<{
+const prop = defineProps<{
   song: Song,
   active: boolean,
   djPlaying?: boolean
 }>()
+
 </script>
 <style lang="scss" scoped>
 .active {

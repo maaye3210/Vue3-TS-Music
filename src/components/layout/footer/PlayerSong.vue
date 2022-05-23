@@ -1,7 +1,7 @@
 <template>
   <div class="flex player-song">
     <img v-if="djPlaying" alt="" class="w-11 h-11 rounded" :src="song.djProgram?.coverUrl || OpticalDisk"/>
-    <img v-else alt="" class="w-11 h-11 rounded" :src="song.al?.picUrl || OpticalDisk"/>
+    <img v-else alt="" v-on:click="openLyric" class="w-11 h-11 rounded" :src="song.al?.picUrl || OpticalDisk"/>
     <div class="ml-2 text-xs flex flex-col justify-between">
       <div class="w-52 2xl:w-96 cursor-pointer truncate">
         <div class="flex">
@@ -28,8 +28,13 @@ import {usePlayerStore} from "@/stores/player";
 import {OpticalDisk} from '@/assets/img';
 import IconPark from "@/components/common/IconPark.vue";
 import {toRefs} from "vue";
+import {useLyricStore} from '@/stores/lyric';
+const {change}=useLyricStore()
 
 const {song, songUrl, djPlaying} = toRefs(usePlayerStore())
+const openLyric=()=>{
+  change()
+}
 </script>
 
 <style lang="scss">
