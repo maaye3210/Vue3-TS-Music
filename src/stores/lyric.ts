@@ -1,6 +1,7 @@
 import {defineStore,storeToRefs} from "pinia";
 import {lyric} from '@/utils/api';
 import {stringToNumber} from '@/utils/number';
+import {usePlayerStore} from '@/stores/player';
 import type {Lyrics} from '@/models/lyric';
 export const useLyricStore = defineStore('lyric', {
   state: () => {
@@ -26,7 +27,11 @@ export const useLyricStore = defineStore('lyric', {
 },
   actions: {
     change(){
-      this.test=!this.test
+      const {isPlaying}=storeToRefs(usePlayerStore())
+      
+      if (isPlaying.value) {
+        this.test=!this.test
+      }
     },
     async getlyric (id:number){
       this.lyrics = await lyric(id)

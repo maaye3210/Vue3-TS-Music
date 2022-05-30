@@ -1,7 +1,8 @@
 import {defineStore} from "pinia";
-import {useLogin, useLoginStatus} from "@/utils/api";
+import {useLogin, useLoginStatus, userPlaylist, userlikelist} from "@/utils/api";
 import type {UserProfile} from "@/models/user";
 import type {Account} from "@/models/user";
+import type {PlayListDetail} from '@/models/playlist';
 
 export const useUserStore = defineStore("user", {
     state: () => {
@@ -11,13 +12,21 @@ export const useUserStore = defineStore("user", {
             uid: -1,
             showLogin: false,
             profile: {} as UserProfile,
-            account: {} as Account
+            account: {} as Account,
+            playlist: [] as PlayListDetail[],
+            loveIdList:[] as number[]
         }
     },
     getters: {
         isLogin: state => {
             return state.profile?.userId > 0
-        }
+        },
+        lovelist: state => {
+            return state.playlist.length > 0 ? state.playlist[0] : []
+        },
+        myplaylists:state => {
+            return state.playlist.filter(list => list.userId === state.uid)
+        },
     },
     actions: {
         async login(phone: string, password: string) {
@@ -30,7 +39,7 @@ export const useUserStore = defineStore("user", {
                 localStorage.setItem("USER-TOKEN", this.token)
                 localStorage.setItem("USER-COOKIE", this.cookie)
                 localStorage.setItem("UID", this.uid.toString())
-                this.checkLogin()
+                await this.checkLogin()
             }
         },
         async checkLogin() {
@@ -40,6 +49,8 @@ export const useUserStore = defineStore("user", {
                 this.showLogin = false
                 this.account = data.account
                 this.uid = data.account.id
+                this.playlist = await userPlaylist(this.uid)
+                this.loveIdList = await userlikelist(this.uid)
             }
 
         }

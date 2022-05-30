@@ -5,7 +5,7 @@
     style="transform: scale(1.3)">
     <img :src="song.al?.picUrl" alt="" class="w-full">
     </div>
-    <div class="absolute inset-0 bg-black bg-opacity-50  p-4 flex flex-col">
+    <div class="absolute inset-0 bg-black bg-opacity-50  p-4 pb-0 flex flex-col">
       <!-- 返回 -->
       <div class="h-12 flex items-center">
         <icon-park  v-on:click="change" :icon="Down" class="text-gray-100 hover:text-teal-400" :size="32"></icon-park>

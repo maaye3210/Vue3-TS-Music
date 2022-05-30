@@ -2,20 +2,11 @@
   <div ref="like">
     我喜欢
   </div>
+  <lovelist></lovelist>
 </template>
-<script lang="ts">
-import exp from 'constants';
-import {ref, onMounted} from 'vue';
-export default{
-  setup() {
-    const like=ref(null)
-    onMounted(()=>{
-      console.log(like.value);
-      
-    })
-    return {
-      like
-    }
-  }
-}
+<script setup lang="ts">
+import {ref, onMounted,toRefs} from 'vue';
+import {useUserStore} from '@/stores/user';
+import lovelist from '@/views/love/lovelist.vue';
+
 </script>

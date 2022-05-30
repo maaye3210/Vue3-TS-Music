@@ -1,11 +1,10 @@
 <!-- 歌曲条目 -->
 <template>
-  <div class="flex song-item items-center w-full hover-bg-main" :class="{'playing':id===song.id}" @dblclick="play(song.id)">
+  <div class="flex song-item items-center w-full hover-bg-main text-lg" :class="{'playing':id===song.id}" @dblclick="play(song.id)">
     <div class="flex-shrink-0 flex-1 flex items-center justify-between pr-5 ">
 
       <div class="items-center flex flex-1 w-10 flex-shrink-0">
-        <IconPark v-if="isLove" :icon="Like" size="16" theme="filled" class="loved"/>
-        <IconPark v-else :icon="Like" size="16" class="notlove"/>
+        <IconPark :icon="Like" size="20" theme="filled" class="text-red-400 mr-1 cursor-pointer hover:text-red-500"/>
         <div class="truncate" style="max-width: 75%;">
           <small>{{ song.name }}</small>
         </div>
@@ -36,11 +35,6 @@
           }}</small>
       </div>
     </div>
-    <div class="w-20 flex-shrink-0 ">
-      <div class="w-20 truncate">
-        <small>{{ useFormatDuring(song.dt / 1000) }}</small>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -48,7 +42,6 @@
 import {Add, DownTwo, Like, MoreTwo, PlayOne, PlayTwo} from '@icon-park/vue-next'
 import {useFormatDuring} from '@/utils/number'
 import {usePlayerStore} from "@/stores/player";
-import {useUserStore} from "@/stores/user";
 import IconPark from "@/components/common/IconPark.vue";
 import type {Song} from "@/models/song";
 import {useRouter} from "vue-router";
@@ -57,15 +50,13 @@ import {storeToRefs} from "pinia";
 
 const router = useRouter()
 
-const props = defineProps<{
+defineProps<{
   song: Song,
   showArName?: boolean,
-  showAlName?: boolean
+  showAlName?: boolean,
 }>()
 const {play} = usePlayerStore()
 const {id} = storeToRefs(usePlayerStore())
-const { loveIdList } = useUserStore()
-let isLove = loveIdList.includes(props.song.id)
 </script>
 
 <style lang="scss" scoped>
@@ -80,11 +71,5 @@ let isLove = loveIdList.includes(props.song.id)
 
 .playing {
   @apply bg-emerald-50 dark:bg-stone-800;
-}
-.loved {
-  @apply text-red-400 mr-1 cursor-pointer hover:text-red-500
-}
-.notlove {
-  @apply text-gray-500 mr-1 cursor-pointer hover:text-red-400;
 }
 </style>

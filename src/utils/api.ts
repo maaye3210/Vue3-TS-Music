@@ -240,3 +240,15 @@ export async function djToplist(limit:number) {
 export async function lyric(id:number) {
     return await http.get<Lyrics>("/lyric",{id})
 }
+
+// /likelist?uid=32953014 我喜欢
+export async function userlikelist(uid:number) {
+    const {ids} = await http.get<{ids:number[]}>("/likelist",{uid})
+    return ids
+}
+
+// /user/subcoun
+export async function userPlaylist(uid:number) {
+    const { playlist } = await http.get<{playlist:PlayListDetail[]}>("/user/playlist",{uid})
+    return playlist
+}
