@@ -1,6 +1,6 @@
 <!-- 歌曲条目 -->
 <template>
-  <div class="flex song-item items-center w-full hover-bg-main" :class="{'playing':id===song.id}" @dblclick="play(song.id)">
+  <div class="flex song-item items-center w-full hover-bg-main" :class="{'playing' : id===song.id}" @dblclick="play(song.id)">
     <div class="flex-shrink-0 flex-1 flex items-center justify-between pr-5 ">
 
       <div class="items-center flex flex-1 w-10 flex-shrink-0">
@@ -36,7 +36,7 @@
           }}</small>
       </div>
     </div>
-    <div class="w-20 flex-shrink-0 ">
+    <div class="w-20 flex-shrink-0 " v-if="showTime">
       <div class="w-20 truncate">
         <small>{{ useFormatDuring(song.dt / 1000) }}</small>
       </div>
@@ -60,7 +60,8 @@ const router = useRouter()
 const props = defineProps<{
   song: Song,
   showArName?: boolean,
-  showAlName?: boolean
+  showAlName?: boolean,
+  showTime?: boolean
 }>()
 const {play} = usePlayerStore()
 const {id} = storeToRefs(usePlayerStore())

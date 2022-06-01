@@ -1,6 +1,6 @@
 <!-- 歌曲条目 -->
 <template>
-  <div class="flex song-item items-center w-full hover-bg-main text-lg" :class="{'playing':id===song.id}" @dblclick="play(song.id)">
+  <div class="flex song-item items-center w-full hover-bg-main text-lg" :class="{'playing' : id === song.id}" @dblclick="play(song.id)">
     <div class="flex-shrink-0 flex-1 flex items-center justify-between pr-5 ">
 
       <div class="items-center flex flex-1 w-10 flex-shrink-0">

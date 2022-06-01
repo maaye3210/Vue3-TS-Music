@@ -1,8 +1,10 @@
 <template>
-  <div ref="like">
+  <div class="px-5">
+    <div class="text-4xl font-black">
     我喜欢
   </div>
   <lovelist></lovelist>
+  </div>
 </template>
 <script setup lang="ts">
 import {ref, onMounted,toRefs} from 'vue';

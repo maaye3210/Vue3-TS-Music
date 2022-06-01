@@ -22,7 +22,7 @@ export const useUserStore = defineStore("user", {
             return state.profile?.userId > 0
         },
         lovelist: state => {
-            return state.playlist.length > 0 ? state.playlist[0] : []
+            return state.playlist.length > 0 ? state.playlist[0] : {} as PlayListDetail
         },
         myplaylists:state => {
             return state.playlist.filter(list => list.userId === state.uid)

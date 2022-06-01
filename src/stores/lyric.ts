@@ -27,9 +27,9 @@ export const useLyricStore = defineStore('lyric', {
 },
   actions: {
     change(){
-      const {isPlaying}=storeToRefs(usePlayerStore())
+      const {djPlaying}=storeToRefs(usePlayerStore())
       
-      if (isPlaying.value) {
+      if (!djPlaying.value) {
         this.test=!this.test
       }
     },

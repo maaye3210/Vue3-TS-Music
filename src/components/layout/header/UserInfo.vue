@@ -20,6 +20,7 @@ import {Lock, Phone} from '@icon-park/vue-next'
 import {useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import {useUserStore} from "@/stores/user";
+import {useUserLikeStore} from "@/stores/userlike";
 import {storeToRefs} from "pinia";
 
 
@@ -28,15 +29,17 @@ const router = useRouter()
 const phone = ref('')
 const password = ref('')
 const {login, checkLogin} = useUserStore()
-const {isLogin, profile, showLogin} = storeToRefs(useUserStore())
+const {getUserPlaylist} = useUserLikeStore()
+const {isLogin, profile, showLogin, uid} = storeToRefs(useUserStore())
 
 const loginSubmit = () => {
   login(phone.value, password.value)
 }
 
 
-onMounted(() => {
-  checkLogin()
+onMounted(async () => {
+  await checkLogin()
+  await getUserPlaylist(uid.value)
 })
 
 </script>

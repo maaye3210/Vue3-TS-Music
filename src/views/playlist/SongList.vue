@@ -8,7 +8,7 @@
     </div>
     <div class="text-sm">
       <template v-for="song in songs.slice(0,pageSize*page)" :key="song.id">
-        <song-list-item :song="song" show-ar-name show-al-name/>
+        <song-list-item :song="song" show-ar-name show-al-name show-time/>
       </template>
     </div>
     <div class="flex justify-center py-5" v-if="songs.length>pageSize && !noMore">
