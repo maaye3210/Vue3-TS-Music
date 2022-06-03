@@ -9,7 +9,7 @@
           <el-tab-pane lazy :label="`歌曲 ${songs.length}`" name="tracks">
             <love-song v-if="songs.length>0" :songs="songs"/>
           </el-tab-pane>
-          <el-tab-pane lazy label="歌单" name="songlist">
+          <el-tab-pane lazy :label="`歌单 ${likeplaylists.length}`" name="songlist">
             <love-songlist />
           </el-tab-pane>
           <el-tab-pane lazy label="专辑" name="album">
@@ -35,7 +35,7 @@ import type {Song} from "@/models/song";
 import {usePlayerStore} from "@/stores/player";
 import {useUserLikeStore} from '@/stores/userlike';
 
-const { lovelist }=toRefs(useUserLikeStore())
+const { lovelist, likeplaylists }=toRefs(useUserLikeStore())
 
 const tab = ref('tracks')
 

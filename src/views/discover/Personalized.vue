@@ -2,7 +2,7 @@
   <div >
     <Title title="你的专属歌单"/>
     <div class="grid grid-flow-row grid-cols-3 lg:grid-cols-5 gap-5 2xl:grid-cols-10">
-      <div v-for="(item,index) in personalized.sampleSize(10)" :key="index" :class="{'item-1':index===0}"
+      <div v-for="(item,index) in personalized.sampleSize(10)" :key="index" :class="{'item-1' : index===0}"
            @click="router.push({name:'playlist',query:{id:item.id}})">
         <CoverPlay :name="item.name" :pic-url="item.picUrl" :play-count="item.playCount" show-play-count/>
         <div class="mt-2 text-xs text-main truncate">{{ item.name }}</div>

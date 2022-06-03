@@ -252,3 +252,8 @@ export async function userPlaylist(uid:number) {
     const { playlist } = await http.get<{playlist:PlayListDetail[]}>("/user/playlist",{uid})
     return playlist
 }
+
+export async function userSubcount(uid:number) {
+    return await http.get("/user/subcount",{uid})
+}
+

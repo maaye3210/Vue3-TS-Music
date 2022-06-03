@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import { userPlaylist, userlikelist} from "@/utils/api";
+import { userPlaylist, userlikelist, userSubcount} from "@/utils/api";
 import type {PlayListDetail} from '@/models/playlist';
 
 
@@ -8,7 +8,8 @@ export const useUserLikeStore = defineStore("userlike", {
         return {
             playlist: [] as PlayListDetail[],
             loveIdList:[] as number[],
-            uid:-1
+            uid:-1,
+            subcount:{}
         }
     },
     getters: {
@@ -30,6 +31,7 @@ export const useUserLikeStore = defineStore("userlike", {
           this.uid=uid
           this.playlist = await userPlaylist(uid)
           this.loveIdList = await userlikelist(uid)
+        //   this.subcount = await userSubcount(uid)
         }
     }
 })

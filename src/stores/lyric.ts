@@ -2,14 +2,20 @@ import {defineStore,storeToRefs} from "pinia";
 import {lyric} from '@/utils/api';
 import {stringToNumber} from '@/utils/number';
 import {usePlayerStore} from '@/stores/player';
+import { TimerControler } from '@/utils/timecontroler';
 import type {Lyrics} from '@/models/lyric';
+// import type { timerControler as TimerControler } from '@/utils/timecontroler';
+
+
+
 export const useLyricStore = defineStore('lyric', {
   state: () => {
       return {
         test: false,
         lyrics: {} as Lyrics,
         currentlyric:0,
-        jumping:false
+        jumping:false,
+        controler:TimerControler
       }
   },
   getters: {

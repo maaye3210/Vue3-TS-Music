@@ -15,6 +15,8 @@ export const usePlayerStore = defineStore({
     id: "player",
     state: () => ({
         audio: new Audio(),
+        audiocontext: new AudioContext(),
+        audioparam: {},
         loopType: 0,//循环模式 0 单曲循环 1 列表循环 2随机播放
         volume: localStorage.getItem(KEYS.volume)?.toInt() || 60,//音量
         playList: [] as Song[],//播放列表,
@@ -354,9 +356,14 @@ export const usePlayerStore = defineStore({
 
 export const userPlayerInit = () => {
     let timer: NodeJS.Timer;
+    
     const {init, interval, playEnd} = usePlayerStore()
-
-    const {ended} = storeToRefs(usePlayerStore())
+    
+    const {ended,audiocontext,audioparam,audio} = storeToRefs(usePlayerStore())
+    audioparam.value=audiocontext.value.createGain()
+    console.log("上下文：",audiocontext.value);
+    console.log("参数：",audioparam.value);
+    console.log("播放器：",audio);
 
     //监听播放结束
     watch(ended, ended => {

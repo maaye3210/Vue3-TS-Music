@@ -16,14 +16,14 @@
           <img :src="song.al?.picUrl" alt="" class="rounded-lg w-96 aspect-square">
         </div>
         <div class="flex-1 text-white flex flex-col justify-center text-center mr-10">
-          <p class="text-xl my-4 flex justify-center leading-4" v-on:click="toTop">
+          <p class="text-xl my-4 flex justify-center leading-4">
           {{song.name}}<icon-park  v-on:click="change" :icon="Youtube" class="text-gray-100 hover:text-teal-400 ml-2" :size="18"></icon-park>
           </p>
           <p class="text-sm text-gray-400">歌手：{{song.ar?.first().name}}</p>
           <p class="text-sm text-gray-400 mb-4">专辑：{{song.al?.name}}</p>
           <el-scrollbar max-height="24rem" ref="scrollbarRef" class="myscroll">
             <div class="h-36"></div>
-            <div v-for="(item,index) in lyriclist" class="mt-4 text-sm" :class="{'text-emerald-400 text-xl':index===currentlyric}">
+            <div v-for="(item,index) in lyriclist" class="mt-4 text-sm" :class="{'text-emerald-400 text-xl' : index===currentlyric}">
               {{ item.word }}
             </div>
             <div class="h-48"></div>
@@ -73,20 +73,25 @@ import IconPark from '@/components/common/IconPark.vue';
 import Controller from "@/components/layout/lyric/Controller.vue";
 import PlayerSlider from "@/components/layout/footer/PlayerSlider.vue";
 import type { ElScrollbar } from 'element-plus'
+
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
 const {song, currentTime, duration, playListCount, showPlayList} = toRefs(usePlayerStore())
-const {test, lyriclist,currentlyric}=toRefs(useLyricStore())
+const {test, lyriclist, currentlyric, controler}=toRefs(useLyricStore())
 const {change}=useLyricStore()
-const toTop=()=>{
-  scrollbarRef.value!.setScrollTop(0)
-}
+// 更新歌词。设置顶部的位置
 const uodateLyric=(index:number)=>{
   
   scrollbarRef.value?.setScrollTop(index*36)
 }
+// 监视歌词序号，发生改变就更新
 watch (currentlyric,(newValue)=>{
   uodateLyric(newValue)
 })
+
+// watch (song,(newValue)=>{
+//   uodateLyric(newValue)
+// })
+
 </script>
 <style lang="scss">
 .badge2 {
