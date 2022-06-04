@@ -19,6 +19,9 @@ import { useCommonStore } from "@/stores/common";
 import type { Banner } from "@/models/banner";
 SwiperCore.use([Autoplay,Navigation]);
 
+defineProps<{
+  perPage?: number
+}>()
 const { banners } = toRefs(useCommonStore())
 const { getBanners } = useCommonStore()
 onMounted(async () => {

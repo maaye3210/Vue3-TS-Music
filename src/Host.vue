@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto flex flex-col items-center  h-screen">
     <div class="h-1/4"></div>
-    <div class="text-2xl mt-5">欢迎体验 MAY MUSIC</div>
+    <div class="text-2xl mt-5">欢迎体验 QQ MUSIC</div>
     <div class="mt-5 w-1/2 xl:w-1/3">
       <div class="mb-5" v-if="pageData.error">
         <el-alert center type="error">

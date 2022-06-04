@@ -7,11 +7,11 @@
     </div>
     <div class="absolute inset-0 bg-black bg-opacity-50  p-4 pb-0 flex flex-col">
       <!-- 返回 -->
-      <div class="h-12 flex items-center">
+      <div class=" flex-grow h-12 flex items-center">
         <icon-park  v-on:click="change" :icon="Down" class="text-gray-100 hover:text-teal-400" :size="32"></icon-park>
       </div>
       <!-- 歌词专辑部分 -->
-      <div class="flex-grow flex justify-around items-center">
+      <div class="flex-shrink flex justify-around items-center">
         <div class="flex flex-1 justify-center">
           <img :src="song.al?.picUrl" alt="" class="rounded-lg w-96 aspect-square">
         </div>
@@ -32,7 +32,7 @@
       </div>
       <PlayerSlider></PlayerSlider>
       <!-- 控制部分 -->
-      <div class="flex-1 h-6 flex px-5 items-center">
+      <div class=" flex-grow flex-1 h-16 flex px-5 items-center">
         <!-- 左侧 -->
         <div class="flex-1 flex gap-x-3 text-main">
           <IconPark :icon="Like" size="18" :stroke-width="3" class="text-slate-400 hover-text"/>
@@ -72,25 +72,43 @@ import {Down,Youtube,Like, DownTwo, MoreTwo, Comment,TextMessage,MusicList} from
 import IconPark from '@/components/common/IconPark.vue';
 import Controller from "@/components/layout/lyric/Controller.vue";
 import PlayerSlider from "@/components/layout/footer/PlayerSlider.vue";
+import { TimerControler } from '@/utils/timecontroler';
 import type { ElScrollbar } from 'element-plus'
 
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
-const {song, currentTime, duration, playListCount, showPlayList} = toRefs(usePlayerStore())
+const {song, currentTime, duration, playListCount, showPlayList,isPlaying,sliderInput} = toRefs(usePlayerStore())
 const {test, lyriclist, currentlyric, controler}=toRefs(useLyricStore())
 const {change}=useLyricStore()
 // 更新歌词。设置顶部的位置
 const uodateLyric=(index:number)=>{
-  
-  scrollbarRef.value?.setScrollTop(index*36)
+  if (currentlyric.value != index) {
+    currentlyric.value = index
+    scrollbarRef.value?.setScrollTop(index*36)
+  }
 }
 // 监视歌词序号，发生改变就更新
-watch (currentlyric,(newValue)=>{
-  uodateLyric(newValue)
-})
-
-// watch (song,(newValue)=>{
+// watch (currentlyric,(newValue)=>{
 //   uodateLyric(newValue)
 // })
+
+watch (lyriclist,(newValue)=>{
+  controler.value.resetTimeline(newValue,200)
+  controler.value.init()
+})
+watch (isPlaying,(newValue)=>{
+  if (newValue) {
+    controler.value.continue()
+  }else{
+    controler.value.pause()
+  }
+})
+watch (sliderInput,(newValue)=>{
+  newValue&&controler.value.settime(currentTime.value*1000,true)
+})
+onMounted(()=>{
+  controler.value.handler=uodateLyric
+})
+
 
 </script>
 <style lang="scss">

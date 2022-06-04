@@ -10,7 +10,11 @@
       <div class="flex-1 overflow-hidden">
         <ElScrollbar>
           <div class="container mx-auto">
-            <RouterView/>
+            <router-view v-slot="{ Component }">
+              <keep-alive>
+                <component :is="Component" />
+              </keep-alive>
+            </router-view>
           </div>
         </ElScrollbar>
       </div>

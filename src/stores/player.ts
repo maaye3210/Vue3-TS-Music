@@ -9,7 +9,6 @@ import type {SongUrl} from "@/models/song_url";
 const KEYS = {
     volume: 'PLAYER-VOLUME'
 }
-
 // tip:如何同步电台歌曲和电台节目——将电台节目储存在对应的歌曲上
 export const usePlayerStore = defineStore({
     id: "player",
@@ -375,7 +374,7 @@ export const userPlayerInit = () => {
     onMounted(() => {
         init()
         console.log('启动歌曲定时器')
-        timer = setInterval(interval, 100)
+        timer = setInterval(interval, 1000)
         
     })
     //清除定时器

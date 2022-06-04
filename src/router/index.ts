@@ -153,24 +153,40 @@ const router = createRouter({
                     path: 'love',
                     name: 'love',
                     component: () => import('@/views/love/love.vue'),
+                    meta: {
+                        menu: 'love',
+                        keepAlive: true,
+                    }
                 },
                 // 本地歌曲
                 {
                     path: 'local',
                     name: 'local',
                     component: () => import('@/views/local/local.vue'),
+                    meta: {
+                        menu: 'local',
+                        keepAlive: true,
+                    }
                 },
                 // 下载歌曲
                 {
                     path: 'download',
                     name: 'download',
                     component: () => import('@/views/download/download.vue'),
+                    meta: {
+                        menu: 'download',
+                        keepAlive: true,
+                    }
                 },
                 // 最近播放
                 {
                     path: 'recently',
                     name: 'recently',
                     component: () => import('@/views/recently/recently.vue'),
+                    meta: {
+                        menu: 'recently',
+                        keepAlive: true,
+                    }
                 },
             ],
         },

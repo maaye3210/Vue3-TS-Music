@@ -18,5 +18,6 @@ defineProps<{
   strokeLinecap?: 'butt' | 'round' | 'square',
   strokeLinejoin?: 'miter' | 'round' | 'bevel',
   strokeWidth?: number
+  title?:string
 }>()
 </script>
