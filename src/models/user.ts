@@ -54,3 +54,14 @@ export interface Account{
   viptypeVersion: number;
   whitelistAuthority: number;
 }
+export interface Subcount{
+	artistCount: number
+code: number
+createDjRadioCount: number
+createdPlaylistCount: number
+djRadioCount: number
+mvCount: number
+newProgramCount: number
+programCount: number
+subPlaylistCount: number
+}

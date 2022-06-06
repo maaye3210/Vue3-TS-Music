@@ -11,9 +11,11 @@
         <ElScrollbar>
           <div class="container mx-auto">
             <router-view v-slot="{ Component }">
-              <keep-alive>
-                <component :is="Component" />
-              </keep-alive>
+              <transition name="slide-fade">
+                <keep-alive>
+                  <component :is="Component" />
+                </keep-alive>
+              </transition>
             </router-view>
           </div>
         </ElScrollbar>
@@ -37,4 +39,15 @@ import PlayList from "@/components/layout/playList/PlayList.vue";
 import Lyric from "@/components/layout/lyric/lyric.vue";
 </script>
 <style lang="scss">
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
 </style>

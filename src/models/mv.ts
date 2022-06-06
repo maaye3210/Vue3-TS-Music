@@ -12,3 +12,16 @@ export interface MvUrl {
 	promotionVo?: any;
 	msg: string;
 }
+export interface LoveMv {
+	alg: object
+	aliaName:string
+	coverUrl:string
+	creator:{userId:number,userName:string}[]
+	durationms:number
+	markTypes:object
+	playTime:number
+	title:string
+	transName:string
+	type:number
+	vid:string
+}

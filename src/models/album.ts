@@ -1,4 +1,4 @@
-import type {Artist} from "@/models/artist";
+import type {Artist} from '@/models/artist';
 
 export interface Album {
     songs: any[];
@@ -28,3 +28,15 @@ export interface Album {
     size: number;
     picId_str: string;
 }
+export interface LoveAlbum{
+    subTime: number,
+    msg: [],
+    alias: [],
+    artists: Artist[],
+    picId: number,
+    picUrl: string,
+    name: string,
+    id: number,
+    size: number,
+    transNames: []
+  }

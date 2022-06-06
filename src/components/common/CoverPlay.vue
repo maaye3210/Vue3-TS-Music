@@ -6,7 +6,7 @@
       <IconPark :icon="PlayOne"
                 theme="filled"
                 class="text-white play-icon opacity-0 transition-opacity hover:text-teal-400" :size="50"
-                @click="onPlay"/>
+                @click="onPlay!"/>
     </div>
     <div v-if="showPlayCount" class="play-count">
       <IconPark :icon="video?Play:Headset" class="mr-1" :size="12"/>

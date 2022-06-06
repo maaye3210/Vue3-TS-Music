@@ -8,12 +8,12 @@ import type {TopListDetail} from "@/models/toplist_detail";
 import http from "@/utils/http";
 import type {Artist, Mv} from "@/models/artist";
 import type {ArtistDesc, ArtistDetail} from "@/models/artist_detail";
-import type {Album} from "@/models/album";
+import type {Album,LoveAlbum} from "@/models/album";
 import type {PersonalizedPrivateContent, Video, VideoGroup} from "@/models/video";
 import type {SearchHotDetail, SearchSuggest} from "@/models/search";
-import type {MvUrl} from "@/models/mv";
+import type {MvUrl,LoveMv} from "@/models/mv";
 import type {PlayListHot} from "@/models/playlist_hot";
-import type {UserProfile} from "@/models/user";
+import type {UserProfile,Subcount} from "@/models/user";
 import type {Account} from "@/models/user";
 import type {DjCatelist,DJBanner,RecommendDjProgram,DjInfo,Recommend,userDjRecommend,djHourTopList} from "@/models/dj";
 import type {Lyrics} from '@/models/lyric';
@@ -254,6 +254,23 @@ export async function userPlaylist(uid:number) {
 }
 
 export async function userSubcount(uid:number) {
-    return await http.get("/user/subcount",{uid})
+    return await http.get<Subcount>("/user/subcount",{uid})
 }
+// /album/sublist
+export async function userAlbumSublist(limit?:number, offset?:number) {
+// limit: 取出数量 , 默认为 25
+// offset: 偏移数量 , 用于分页 , 如 :( 页数 -1)*25, 其中 25 为 limit 的值 , 默认 为 0
 
+    const {data} = await http.get<{data:LoveAlbum[]}>("/album/sublist",{limit ,offset})
+    return data
+}
+// /dj/sublist
+export async function userDjSublist() {
+    const {djRadios} = await http.get<{djRadios:DjInfo[]}>("/dj/sublist")
+    return djRadios
+}
+// /mv/sublist
+export async function userMvSublist() {
+    const {data} = await http.get<{data:LoveMv[]}>("/mv/sublist")
+    return data
+}
