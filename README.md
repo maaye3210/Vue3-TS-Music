@@ -38,7 +38,7 @@ yarn run dev
 
 #### 搜索功能
 
-![](https://github.com/maaye3210/Vue3-TS-Music/blob/master/ui/%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%8A%9F%E8%83%BD.png)
+![](https://github.com/maaye3210/Vue3-TS-Music/blob/master/ui/%E6%90%9C%E7%B4%A2%E5%8A%9F%E8%83%BD.png)
 
 #### 电台
 
