@@ -18,6 +18,7 @@ import type {Account} from "@/models/user";
 import type {DjCatelist,DJBanner,RecommendDjProgram,DjInfo,Recommend,userDjRecommend,djHourTopList,todayPerferedDj} from "@/models/dj";
 import type {djDetail} from "@/models/djlist";
 import type {Lyrics} from '@/models/lyric';
+import type {PlayListCommentInfo} from "@/models/comment";
 
 export async function useLogin(phone: string, password: string) {
     return await http.get<{
@@ -290,5 +291,14 @@ export async function userTodayPerferedDj() {
 // /dj/detail
 export async function useDjDetail(rid:number) {
     const {data} = await http.get<{data:DjInfo}>("/dj/detail",{rid})
+    return data
+}
+// /comment/new 统一评论数据接口
+export async function useCommentNew(id:number,type:number,pageNo:number=1,pageSize:number=20,sortType:number=1,cursor?:number) {
+    // pageNo:分页参数,第 N 页,默认为 1
+    // pageSize:分页参数,每页多少条数据,默认 20
+    // sortType: 排序方式, 1:按推荐排序, 2:按热度排序, 3:按时间排序
+    // cursor: 当sortType为 3 时且页数不是第一页时需传入,值为上一条数据的 time
+    const {data} = await http.get<{data:PlayListCommentInfo}>("/comment/new",{id,type,pageNo,pageSize,sortType,cursor})
     return data
 }

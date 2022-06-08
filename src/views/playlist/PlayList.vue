@@ -7,7 +7,7 @@
           <SongList :songs="songs"/>
         </el-tab-pane>
         <el-tab-pane lazy label="评论" name="comments">
-          <song-list-comment></song-list-comment>
+          <song-list-comment :playlist="playlist"></song-list-comment>
         </el-tab-pane>
       </el-tabs>
     </div>

@@ -6,7 +6,7 @@
 
 手机端未适配，后期会单独开发手机客户端，让我先把PC端完善好再说。
 
-目前PC端已完成50%，后续会继续进行更新~目前已完成推荐、音乐馆、视频模块的开发，并且完成了登录业务，但是现在仅支持手机登录，后续会添加注册和其他方式登录业务
+目前完成PC端，后续会继续进行更新~目前已完成推荐、音乐馆、视频模块的开发，并且完成了登录业务，现在仅支持手机登录，后续会添加注册和其他方式登录业务
 
 网易云音乐API为了安全考虑，没有提供在线API接口服务，需要准备好自己的API服务地址，首次打开时会要求设置API地址
 
@@ -39,6 +39,20 @@ yarn run dev
 #### 搜索功能
 
 ![](https://github.com/maaye3210/Vue3-TS-Music/blob/master/ui/%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%8A%9F%E8%83%BD.png)
+
+#### 电台
+
+![](https://github.com/maaye3210/Vue3-TS-Music/blob/master/ui/电台.jpg)
+
+#### 歌词
+
+![](https://github.com/maaye3210/Vue3-TS-Music/blob/master/ui/歌词.jpg)
+
+#### 我喜欢
+
+![](https://github.com/maaye3210/Vue3-TS-Music/blob/master/ui/我喜欢.jpg)
+
+![](https://github.com/maaye3210/Vue3-TS-Music/blob/master/ui/我喜欢的歌单.jpg)
 
 ## ......
 
