@@ -15,7 +15,8 @@ import type {MvUrl,LoveMv} from "@/models/mv";
 import type {PlayListHot} from "@/models/playlist_hot";
 import type {UserProfile,Subcount} from "@/models/user";
 import type {Account} from "@/models/user";
-import type {DjCatelist,DJBanner,RecommendDjProgram,DjInfo,Recommend,userDjRecommend,djHourTopList} from "@/models/dj";
+import type {DjCatelist,DJBanner,RecommendDjProgram,DjInfo,Recommend,userDjRecommend,djHourTopList,todayPerferedDj} from "@/models/dj";
+import type {djDetail} from "@/models/djlist";
 import type {Lyrics} from '@/models/lyric';
 
 export async function useLogin(phone: string, password: string) {
@@ -219,12 +220,14 @@ export async function djRecommend() {
     const {data}=await http.get<{ data: Recommend[]}>("/dj/personalize/recommend")
     return data
 }
-export async function djProgram(rid:number,offset:number=0) {
-    const {programs}=await http.get<{ programs: RecommendDjProgram[]}>("/dj/program",{rid,limit:5,offset})
+export async function djProgram(rid:number, offset:number=0, limit:number = 5) {
+    const {programs}=await http.get<{ programs: RecommendDjProgram[]}>("/dj/program",{rid,limit,offset})
     return programs
 }
-export async function useDjDetail(id:number) {
+export async function useProgramDjDetail(id:number) {
     const {program}=await http.get<{ program: RecommendDjProgram }>("/dj/program/detail",{id})
+    console.log(program);
+    
     return program
 }
 export async function userdjRecommend() {
@@ -272,5 +275,20 @@ export async function userDjSublist() {
 // /mv/sublist
 export async function userMvSublist() {
     const {data} = await http.get<{data:LoveMv[]}>("/mv/sublist")
+    return data
+}
+// /user/dj
+export async function userDj(id:number) {
+    const data = await http.get<{}>("/mv/sublist",{id})
+    return data
+}
+// /dj/today/perfered
+export async function userTodayPerferedDj() {
+    const {data} = await http.get<{data:todayPerferedDj[]}>("/dj/today/perfered")
+    return data
+}
+// /dj/detail
+export async function useDjDetail(rid:number) {
+    const {data} = await http.get<{data:DjInfo}>("/dj/detail",{rid})
     return data
 }

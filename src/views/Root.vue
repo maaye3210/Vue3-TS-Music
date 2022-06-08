@@ -38,16 +38,14 @@ import Footer from "@/components/layout/footer/Footer.vue";
 import PlayList from "@/components/layout/playList/PlayList.vue";
 import Lyric from "@/components/layout/lyric/lyric.vue";
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .slide-fade-enter-active {
-  transition: all .3s ease;
+  transition: all 0.8s ease-out;
 }
-.slide-fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.slide-fade-enter, .slide-fade-leave-to
+.slide-fade-enter-from
 /* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateX(10px);
+  transform: translateX(30px);
   opacity: 0;
 }
+
 </style>

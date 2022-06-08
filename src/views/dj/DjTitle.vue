@@ -20,8 +20,6 @@ const props = defineProps<{
 }>()
 const router=useRouter()
 function handleClick (){
-  console.log();
-  
   router.push({name: props.linkTo?props.linkTo:'alldj'})
 }
 

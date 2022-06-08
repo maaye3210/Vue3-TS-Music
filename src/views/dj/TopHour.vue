@@ -15,7 +15,6 @@ import { onMounted ,ref,toRefs} from "vue";
 import { djToplist } from "@/utils/api";
 import type { djHourTopList } from "@/models/dj";
 import { usePlayerStore } from '@/stores/player';
-import type { RecommendDjProgram } from "@/models/dj";
 const {  play, playDj }=usePlayerStore()
 const { djPlaying }=toRefs(usePlayerStore())
 const topList=ref([] as djHourTopList[])

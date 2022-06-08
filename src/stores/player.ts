@@ -1,5 +1,5 @@
 import {defineStore, storeToRefs} from "pinia";
-import {useDetail, useSongUrl, djProgram, useDjDetail, lyric } from "@/utils/api";
+import {useDetail, useSongUrl, djProgram, useProgramDjDetail, lyric } from "@/utils/api";
 import {onMounted, onUnmounted, toRefs, watch} from "vue";
 import {useLyricStore} from '@/stores/lyric';
 import type {Song} from "@/models/song";
@@ -162,7 +162,9 @@ export const usePlayerStore = defineStore({
             
             if (id == this.id) return;
             this.isPlaying = false
-            const detail = await useDjDetail(id)
+            const detail = await useProgramDjDetail(id)
+            console.log(detail);
+            
             const data = await useSongUrl(detail.mainSong.id)
             this.audio.src = data.url;
             console.log('节目ID:', id, '节目url:',data.url);
@@ -214,7 +216,7 @@ export const usePlayerStore = defineStore({
             this.djPlaying=true
         },
         async djDetail() {
-            const detail = await useDjDetail(this.id)
+            const detail = await useProgramDjDetail(this.id)
             this.song = await useDetail(detail.mainSong.id)
             this.song.djProgram=detail
             console.log('电台id',this.song.djId);

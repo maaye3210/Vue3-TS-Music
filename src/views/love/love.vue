@@ -59,9 +59,7 @@ const playAll = () => {
 }
 const getData = async () => {
   if (lovelist.value.id) {
-    await usePlayListTrackAll(lovelist.value.id).then(res => {
-      songs.value = res
-    })
+    songs.value = await usePlayListTrackAll(lovelist.value.id)
   }
 }
 

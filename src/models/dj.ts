@@ -350,3 +350,58 @@ export interface djHourTopList{
 	rank: number
 	score: number
 }
+export interface todayPerferedDj{
+	alg: string
+	discountPrice: object
+	feeScope: number
+	icon: object
+	id: number
+	lastProgramName: string
+	name: string
+	originalPrice: object
+	picUrl: string
+	playCount: number
+	programCount: number
+	radioFeeType: number
+	rcmdText: string
+	subCount: number
+	subed: boolean
+	traceId: object
+}
+export interface djDetail {
+    id: number,
+    name: string,
+    dj: DJ,
+    picId: number,
+    picUrl: string,
+    desc: string,
+    subCount: number,
+    shareCount: number,
+    likedCount: number,
+    programCount: number,
+    commentCount: number,
+    createTime: number,
+    categoryId: number,
+    category: string,
+    secondCategoryId: number,
+    secondCategory: string,
+    radioFeeType: number,
+    feeScope: number,
+    lastProgramCreateTime: number,
+    lastProgramId: number,
+    rcmdText: string,
+    subed: boolean,
+    commentDatas: [],
+    feeInfo: object,
+    unlockInfo: object,
+    original: boolean,
+    playCount: number,
+    privacy: boolean,
+    disableShare: boolean,
+    icon: object,
+    activityInfo: object,
+    toplistInfo: object,
+    dynamic: boolean,
+    labelDto: object,
+    labels: object
+}

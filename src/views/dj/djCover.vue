@@ -1,12 +1,12 @@
 <template>
 <!-- DJ封面 -->
-  <div class="djcover-play-image aspect-square">
+  <div class="djcover-play-image aspect-square" @click="emitOnDetail()">
     <el-image :src="picUrl" :alt="name" class="w-full bg-gray-50 object-cover"/>
     <div class="mask flex justify-center items-center">
       <IconPark :icon="PlayOne"
       theme="filled"
       class="text-white play-icon opacity-0  hover:text-teal-400" :size="50"
-      @click="emitOnPlay()"/>
+      @click.stop="emitOnPlay()"/>
     </div>
   </div>
 </template>
@@ -14,7 +14,9 @@
 <script setup lang="ts">
 import {PlayOne} from '@icon-park/vue-next'
 import IconPark from "@/components/common/IconPark.vue";
-import type { RecommendDjProgram } from "@/models/dj";
+import {useRouter} from 'vue-router';
+
+const router = useRouter()
 
 const props = defineProps<{
   picUrl : string
@@ -22,6 +24,7 @@ const props = defineProps<{
   id : number
   programid?: number
   onPlay: (id:number) => void
+  onDetail?: (id:number)=>void
 }>()
 const emitOnPlay=()=>{
   if (props.programid) {
@@ -30,6 +33,12 @@ const emitOnPlay=()=>{
     props.onPlay(props.id)
   }
 }
+const emitOnDetail=() => {
+  if (props.onDetail) {
+    props.onDetail(props.id)
+  }
+}
+
 </script>
 
 <style lang="scss">

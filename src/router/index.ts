@@ -42,10 +42,11 @@ const router = createRouter({
                         },
                         {
                             path: 'toplist',
-                            name: '排行',
+                            name: 'toplist',
                             component: () => import("@/views/music/toplist/TopList.vue"),
                             meta: {
                                 menu: 'music',
+                                title: '排行',
                                 keepAlive: true,
                             }
                         },
@@ -139,6 +140,17 @@ const router = createRouter({
                     meta: {
                         menu: 'dj',
                         title: '分类电台',
+                        keepAlive: true,
+                    }
+                },
+                // 电台详情
+                {
+                    path: 'djDetail',
+                    name: 'djDetail',
+                    component: () => import("@/views/dj/djDetail/djDtail.vue"),
+                    meta: {
+                        menu: 'dj',
+                        title: '电台详情',
                         keepAlive: true,
                     }
                 },

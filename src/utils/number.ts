@@ -28,6 +28,12 @@ export function useFormatDuring(during: number) {
     return ii + ':' + ss;
 
 }
+export function formatTime (time:number):string {
+    const date = new Date(time)
+    const month = (Math.floor((date.getMonth()+1)/10)).toString() + (date.getMonth()+1)%10
+    const day = Math.floor(date.getDate()/10).toString() + date.getDate()%10
+    return `${date.getFullYear()}-${month}-${day}`
+  }
 // 字符转换成秒数
 export function stringToNumber(string: string) {
     const time = string.split(":");
