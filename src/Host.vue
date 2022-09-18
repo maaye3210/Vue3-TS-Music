@@ -8,7 +8,7 @@
           地址请求失败，请检查后重试！
         </el-alert>
       </div>
-      <el-input size="large" placeholder="http://127.0.0.1:3000" v-model="pageData.host">
+      <el-input size="large" placeholder="http://47.98.123.20:3000" v-model="pageData.host">
         <template #prepend>API 地址</template>
         <template #append>
           <el-button @click="sub" :loading="pageData.loading">确定</el-button>
@@ -39,7 +39,7 @@ const pageData = reactive({
 const {setHost} = useHostStore()
 
 const baseUrl = computed(() => {
-  return pageData.host.trimEnd('/')||'http://localhost:3000'
+  return pageData.host.trimEnd('/')||'http://47.98.123.20:3000'
 })
 
 const sub = async () => {

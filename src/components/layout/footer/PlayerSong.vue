@@ -31,9 +31,10 @@ import {toRefs} from "vue";
 import {useLyricStore} from '@/stores/lyric';
 const {change}=useLyricStore()
 
-const {song, songUrl, djPlaying} = toRefs(usePlayerStore())
+const {song, songUrl, djPlaying, isPlaying} = toRefs(usePlayerStore())
 const openLyric=()=>{
-  change()
+  
+  isPlaying.value && change()
 }
 </script>
 

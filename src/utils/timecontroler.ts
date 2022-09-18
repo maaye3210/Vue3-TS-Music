@@ -5,10 +5,10 @@ export class TimerControler {
   isPlaying = false
   currenttime = new Date()
   Timer = {} as NodeJS.Timer
-  origintimes:number[]
-  times:number[]
-  handler:(index:number)=>void
-  constructor(lyrics:{time:number}[], handler:(index:number)=>void, offset:number=0) {
+  origintimes: number[]
+  times: number[]
+  handler: (index: number) => void
+  constructor(lyrics: { time: number }[], handler: (index: number) => void, offset: number = 0) {
     const origintimes = []
     for (let i = 0; i < lyrics.length; i++) {
       origintimes.push(Math.round(lyrics[i].time * 1000) - offset)
@@ -30,7 +30,7 @@ export class TimerControler {
   }
   // play都是从头播放的，用户不应该直接调用
   protected play() {
-    if (this.currentIndex === this.times.length) return 
+    if (this.currentIndex === this.times.length) return
     // 这里最好不要有太多操作，影响速度
     this.Timer = setTimeout(() => {
       this.handler(this.currentIndex)
@@ -68,7 +68,7 @@ export class TimerControler {
     clearTimeout(this.Timer)
     this.currentIndex = 0
   }
-  resetTimeline(lyrics:{time:number}[],offset:number=0) {
+  resetTimeline(lyrics: { time: number }[], offset: number = 0) {
     this.reset()
     const origintimes = []
     for (let i = 0; i < lyrics.length; i++) {
@@ -82,7 +82,7 @@ export class TimerControler {
     this.times = times
   }
   // 设置时间
-  settime(time:number, redo:boolean = false) {
+  setTime(time: number, redo: boolean = false) {
     // 两种情况，整数或者一个对应的time
     // 这时要知道设置的时间与上一个开始节点之间的距离
     if (time < 0) {
@@ -91,10 +91,10 @@ export class TimerControler {
     clearTimeout(this.Timer)
     if (time >= this.origintimes[this.origintimes.length - 1]) {
       this.currentIndex = this.origintimes.length
-      if (redo&&this.currentIndex>0) {
+      if (redo && this.currentIndex > 0) {
         this.handler(this.currentIndex)
       }
-      return 
+      return
     }
     // 到这里说明设定的时间在时间轴范围内
     // 找到设定的时间之后第一个要执行的序号
@@ -104,23 +104,23 @@ export class TimerControler {
         break
       }
     }
-    if (redo&&this.currentIndex>0) {
-      this.handler(this.currentIndex-1)
+    if (redo && this.currentIndex > 0) {
+      this.handler(this.currentIndex - 1)
     }
     // 还原现场
     if (this.currentIndex > 0) {
       // console.log(this.lasttime,'时间：' , time, '上个时间开始时间：' , this.origintimes[this.currentIndex]);
-      this.lasttime = time - this.origintimes[this.currentIndex-1]
-    }else{
-      this.lasttime = time 
+      this.lasttime = time - this.origintimes[this.currentIndex - 1]
+    } else {
+      this.lasttime = time
     }
     // this.lasttime = time - this.currentIndex > 0 ? this.origintimes[this.currentIndex] : 0
     // console.log('time:',time,'index:', this.currentIndex,'lasttime:',this.lasttime,'需要时间：',this.times[this.currentIndex],"定时时间：",this.times[this.currentIndex] - this.lasttime);
     // console.log(this.lasttime,this.times[this.currentIndex] - this.lasttime);
-    
+
     this.Timer = setTimeout(() => {
       this.handler(this.currentIndex)
-      
+
       this.currentIndex++
       // console.log('--------',this.currentIndex,'------this.currentIndex');
       this.play()

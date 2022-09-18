@@ -7,11 +7,11 @@
     </div>
     <div class="absolute inset-0 bg-black bg-opacity-50  p-4 pb-0 flex flex-col">
       <!-- 返回 -->
-      <div class=" flex-grow h-12 flex items-center">
+      <div class="h-16 flex items-center">
         <icon-park  v-on:click="change" :icon="Down" class="text-gray-100 hover:text-teal-400" :size="32"></icon-park>
       </div>
       <!-- 歌词专辑部分 -->
-      <div class="flex-shrink flex justify-around items-center">
+      <div class="flex-grow flex justify-around items-center">
         <div class="flex flex-1 justify-center">
           <img :src="song.al?.picUrl" alt="" class="rounded-lg w-96 aspect-square">
         </div>
@@ -32,7 +32,7 @@
       </div>
       <PlayerSlider></PlayerSlider>
       <!-- 控制部分 -->
-      <div class=" flex-grow flex-1 h-16 flex px-5 items-center">
+      <div class="h-24 flex px-5 items-center">
         <!-- 左侧 -->
         <div class="flex-1 flex gap-x-3 text-main">
           <IconPark :icon="Like" size="18" :stroke-width="3" class="text-slate-400 hover-text"/>
@@ -103,7 +103,7 @@ watch (isPlaying,(newValue)=>{
   }
 })
 watch (sliderInput,(newValue)=>{
-  newValue&&controler.value.settime(currentTime.value*1000,true)
+  newValue&&controler.value.setTime(currentTime.value*1000,true)
 })
 onMounted(()=>{
   controler.value.handler=uodateLyric

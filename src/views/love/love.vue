@@ -6,16 +6,16 @@
     <div class="playlist">
       <div v-if="lovelist">
         <el-tabs class="mt-3" v-model="tab">
-          <el-tab-pane lazy :label="`歌曲 ${songs.length}`" name="tracks">
-            <love-song v-if="songs.length>0" :songs="songs"/>
+          <el-tab-pane lazy :label="`歌曲 ${subcount.subPlaylistCount||''}`" name="tracks">
+            <love-song />
           </el-tab-pane>
-          <el-tab-pane lazy :label="`歌单 ${subcount.subPlaylistCount}`" name="songlist">
+          <el-tab-pane lazy :label="`歌单 ${subcount.subPlaylistCount||''}`" name="songlist">
             <love-songlist />
           </el-tab-pane>
           <el-tab-pane lazy :label="`专辑`" name="album">
             <love-album />
           </el-tab-pane>
-          <el-tab-pane lazy :label="`主播电台 ${subcount.djRadioCount}`" name="dj">
+          <el-tab-pane lazy :label="`主播电台 ${subcount.djRadioCount||''}`" name="dj">
             <love-dj />
           </el-tab-pane>
           <el-tab-pane lazy :label="`视频`" name="vedio">
@@ -44,27 +44,9 @@ import LoveAlbum from './loveAlbum.vue';
 import LoveDj from './loveDj.vue';
 import LoveMv from './loveMv.vue';
 
-const { lovelist, likeplaylists, subcount }=toRefs(useUserLikeStore())
+const { lovelist, subcount }=toRefs(useUserLikeStore())
 
 const tab = ref('tracks')
-
-const songs = ref<Song[]>([]);
-
-const {pushPlayList, play} = usePlayerStore()
-
-const playAll = () => {
-  pushPlayList(true, ...songs.value)
-
-  play(songs.value.first().id)
-}
-const getData = async () => {
-  if (lovelist.value.id) {
-    songs.value = await usePlayListTrackAll(lovelist.value.id)
-  }
-}
-
-watch(lovelist, getData)
-onMounted(getData)
 
 </script>
 
