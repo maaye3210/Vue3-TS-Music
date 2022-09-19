@@ -1,7 +1,7 @@
 <template>
   <div class="mt-2">
     <div class="flex py-5">
-      <div class="w-32 button mr-3 ">
+      <div class="w-32 button mr-3 " :onclick="playAll">
         <IconPark :icon="PlayOne" size="20" />
         <div class="ml-1">播放全部</div>
       </div>
@@ -47,8 +47,7 @@
         <song-list-item :song="song" show-ar-name show-al-name />
       </template>
         <div class="flex justify-center py-6">
-          <span v-if="!loadAll" class="text-sm text-center hover-text" @click="getMoreData()">加载更多</span>
-          <span v-else class="text-sm text-center cursor-pointer">已加载全部</span>
+          <LoadMore :loadAll="loadAll" :loading="loading" :onloadMore="getMoreData" />
         </div>
     </div>
   </div>
@@ -60,12 +59,15 @@ import type { Song } from "@/models/song";
 import songListItem from "@/components/common/SongListItem.vue";
 import { ref, toRefs, onMounted, watch } from "vue";
 import { usePlayListTrackAll} from "@/utils/api";
-import { Sort, UpOne, DownOne, PlayOne, Download, List, Search, SortOne, VerticalTidyUp, Avatar, Cd } from '@icon-park/vue-next'
+import { Sort, UpOne, DownOne, PlayOne, Download, List, Search, SortOne, VerticalTidyUp, Avatar, Cd, LoadingOne } from '@icon-park/vue-next'
 import IconPark from "@/components/common/IconPark.vue";
+import 'font-awesome-animation';
 import {useUserLikeStore} from '@/stores/userlike';
+import {usePlayerStore} from "@/stores/player";
+import LoadMore from '@/components/common/LoadMore.vue';
 
 const { lovelist } = toRefs(useUserLikeStore())
-
+const {pushPlayList, play} = usePlayerStore()
 const songs = ref<Song[]>([]);
 
 const getData = async () => {
@@ -88,7 +90,11 @@ const getMoreData = async () => {
   }
   loading.value = false
 }
+const playAll = () => {
+  pushPlayList(true, ...songs.value)
 
+  play(songs.value.first().id)
+}
 const pageSize = 20
 const pageNo = ref(0)
 const order = ref(-1)
@@ -96,6 +102,7 @@ const loadAll = ref(false)
 const loading = ref(false)
 
 watch(lovelist, getData)
+onMounted(getData)
 
 </script>
 <style lang="scss" scoped>

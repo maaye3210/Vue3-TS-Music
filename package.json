@@ -13,6 +13,7 @@
     "axios": "^0.26.0",
     "dayjs": "^1.10.8",
     "element-plus": "^2.0.4",
+    "font-awesome-animation": "^1.1.1",
     "lodash": "^4.17.21",
     "pinia": "^2.0.11",
     "swiper": "^8.0.6",

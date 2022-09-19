@@ -6,7 +6,7 @@
     <div class="playlist">
       <div v-if="lovelist">
         <el-tabs class="mt-3" v-model="tab">
-          <el-tab-pane lazy :label="`歌曲 ${subcount.subPlaylistCount||''}`" name="tracks">
+          <el-tab-pane lazy :label="`歌曲 ${loveIdList.length||''}`" name="tracks">
             <love-song />
           </el-tab-pane>
           <el-tab-pane lazy :label="`歌单 ${subcount.subPlaylistCount||''}`" name="songlist">
@@ -29,22 +29,20 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref, toRefs, watch} from "vue";
-import { usePlayListTrackAll} from "@/utils/api";
+import { ref, toRefs } from "vue";
 import loveSong from "@/views/love/loveSong.vue";
 import loveSonglist from "@/views/love/loveSonglist.vue";
 import loveAlbum from "@/views/love/loveAlbum.vue";
 import loveDj from "@/views/love/loveDj.vue";
 import loveMv from "@/views/love/loveMv.vue";
 
-import type {Song} from "@/models/song";
-import {usePlayerStore} from "@/stores/player";
 import {useUserLikeStore} from '@/stores/userlike';
 import LoveAlbum from './loveAlbum.vue';
 import LoveDj from './loveDj.vue';
 import LoveMv from './loveMv.vue';
 
-const { lovelist, subcount }=toRefs(useUserLikeStore())
+const { lovelist, subcount, loveIdList }=toRefs(useUserLikeStore())
+console.log(subcount);
 
 const tab = ref('tracks')
 

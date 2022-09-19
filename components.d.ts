@@ -30,6 +30,7 @@ declare module 'vue' {
     IconPark: typeof import('./src/components/common/IconPark.vue')['default']
     ListHot: typeof import('./src/components/common/ListHot.vue')['default']
     Loading: typeof import('element-plus/es')['ElLoadingDirective']
+    LoadMore: typeof import('./src/components/common/LoadMore.vue')['default']
     Lyric: typeof import('./src/components/layout/lyric/lyric.vue')['default']
     Menu: typeof import('./src/components/layout/menu/Menu.vue')['default']
     MenuList: typeof import('./src/components/layout/menu/MenuList.vue')['default']
