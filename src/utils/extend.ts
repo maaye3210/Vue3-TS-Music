@@ -1,6 +1,7 @@
 import { first, last, sampleSize, sample, chunk, trimEnd } from 'lodash'
 import dayjs from 'dayjs'
 import { useNumberFormat } from "@/utils/number";
+import type { type } from 'os';
 
 declare global {
     interface Array<T> {
@@ -23,7 +24,7 @@ declare global {
          * 将数组（array）拆分成多个 size 长度的区块
          * @param size
          */
-        
+
         chunk<T>(this: T[], size: number): T[][]
 
     }
@@ -41,6 +42,20 @@ declare global {
         toDate(this: number, format?: string): string
 
         numberFormat(this: number): string | number
+    }
+
+    interface Function {
+        /**
+         * 
+         * @param beforefn 添加先执行的装饰器
+         */
+        before<T>(beforefn: Function): (this: T) => Function
+
+        /**
+         * 
+         * @param afterfn 添后执行的装饰器
+         */
+        after<T>(afterfn: Function): (this: T) => Function
     }
 }
 Array.prototype.first = function <T>(this: T[]): T {
@@ -72,4 +87,21 @@ Number.prototype.toDate = function (this: number, format: string = 'YYYY-MM-DD')
 
 Number.prototype.numberFormat = function (this: number): string | number {
     return useNumberFormat(this)
+}
+
+Function.prototype.before = function (beforefn) {
+    var _self = this
+    return function () {
+        beforefn.apply(this, arguments)
+        return _self.apply(this, arguments)
+    }
+}
+
+Function.prototype.after = function (afterfn) {
+    var _self = this
+    return function () {
+        var ret = _self.apply(this, arguments)
+        afterfn.apply(this, arguments)
+        return ret
+    }
 }

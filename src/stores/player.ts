@@ -25,7 +25,6 @@ export const usePlayerStore = defineStore({
         songUrl: {} as SongUrl,
         song: {} as Song,
         isPlaying: false, //是否播放中
-        isPause: true,//是否暂停
         sliderInput: false,//是否正在拖动进度条
         ended: false,//是否播放结束
         muted: false,//是否静音
@@ -76,7 +75,6 @@ export const usePlayerStore = defineStore({
             this.id = 0;
             this.song = {} as Song
             this.isPlaying = false;
-            this.isPause = false;
             this.sliderInput = false;
             this.ended = false;
             this.muted = false;
@@ -100,7 +98,6 @@ export const usePlayerStore = defineStore({
             console.log('歌曲ID:', id, '歌曲url:', data.url);
             this.audio.play().then(res => {
                 this.isPlaying = true
-                this.isPause = false
                 this.songUrl = data
                 this.url = data.url
                 this.id = id
@@ -154,9 +151,8 @@ export const usePlayerStore = defineStore({
             this.pushDjList(false, ...djList)
             await this.playDj(this.djProgram.id)
         },
-        async playDj(id: number) {
-            console.log(id, this.id);
-
+        async playDj(id?: number) {
+            if (!id) return
             if (id == this.id) return;
             this.isPlaying = false
             const detail = await useProgramDjDetail(id)
@@ -167,7 +163,6 @@ export const usePlayerStore = defineStore({
             console.log('节目ID:', id, '节目url:', data.url);
             this.audio.play().then(res => {
                 this.isPlaying = true
-                this.isPause = false
                 this.songUrl = data
                 this.url = data.url
                 this.djProgram = detail
@@ -235,11 +230,9 @@ export const usePlayerStore = defineStore({
             } else {
                 if (this.djPlaying) {
                     if (this.thisIndex >= this.playListCount - 2) {
-                        console.log('加载了更多电台节目');
                         this.moreDj()
                     }
-                    console.log(this.nextSong.djProgram);
-                    this.playDj((this.nextSong.djProgram as RecommendDjProgram).id)
+                    this.playDj(this.nextSong.djProgram?.id)
                 } else {
                     this.play(this.nextSong.id)
                 }
@@ -283,27 +276,24 @@ export const usePlayerStore = defineStore({
         //播放、暂停
         togglePlay() {
             if (!this.song.id) return;
-            this.isPlaying = !this.isPlaying
-            if (!this.isPlaying) {
+            if (this.isPlaying) {
                 this.audio.pause();
-                this.isPause = true
             } else {
                 this.audio.play();
-                this.isPause = false
             }
+            this.isPlaying = !this.isPlaying
         },
+        // 播放
         setPlay() {
             if (!this.song.id) return;
             this.isPlaying = true
             this.audio.play();
-            this.isPause = false
-
         },
+        // 暂停
         setPause() {
             if (!this.song.id) return;
             this.isPlaying = false
             this.audio.pause();
-            this.isPause = true
         },
         //切换循环类型
         toggleLoop() {
@@ -331,19 +321,14 @@ export const usePlayerStore = defineStore({
             this.currentTime = val
             this.sliderInput = false;
             this.audio.currentTime = val
-            console.log('拖动到', val);
         },
-        //播放时间拖动中
+        //播放位置正在修改，防止被定时器修改
         onSliderInput(val: number) {
-            console.log('拖动');
             this.sliderInput = true;
         },
         //定时器
         interval() {
-            const { checkLyric } = useLyricStore()
             if (this.isPlaying && !this.sliderInput) {
-                const time = parseFloat(this.audio.currentTime.toString());
-                checkLyric(time)
                 this.currentTime = parseInt(this.audio.currentTime.toString())
                 this.duration = parseInt(this.audio.duration.toString());
                 this.ended = this.audio.ended
@@ -353,6 +338,7 @@ export const usePlayerStore = defineStore({
 })
 
 export const userPlayerInit = () => {
+    const { checkLyric } = useLyricStore()
     let timer: NodeJS.Timer;
 
     const { init, interval, playEnd } = usePlayerStore()
@@ -373,8 +359,9 @@ export const userPlayerInit = () => {
     onMounted(() => {
         init()
         console.log('启动歌曲定时器')
-        timer = setInterval(interval, 1000)
-
+        timer = setInterval(interval.before(() => {//装饰器，检查歌词位置
+            checkLyric(audio.value.currentTime)
+        }), 1000)
     })
     //清除定时器
     onUnmounted(() => {

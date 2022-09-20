@@ -61,7 +61,6 @@ import { ref, toRefs, onMounted, watch } from "vue";
 import { usePlayListTrackAll} from "@/utils/api";
 import { Sort, UpOne, DownOne, PlayOne, Download, List, Search, SortOne, VerticalTidyUp, Avatar, Cd, LoadingOne } from '@icon-park/vue-next'
 import IconPark from "@/components/common/IconPark.vue";
-import 'font-awesome-animation';
 import {useUserLikeStore} from '@/stores/userlike';
 import {usePlayerStore} from "@/stores/player";
 import LoadMore from '@/components/common/LoadMore.vue';
