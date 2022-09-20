@@ -10,11 +10,16 @@
       <div class="flex-1 overflow-hidden">
         <ElScrollbar>
           <div class="container mx-auto">
-            <router-view v-slot="{ Component }">
+            <router-view v-show="$route.meta.keepAlive" v-slot="{ Component }">
               <transition name="slide-fade">
                 <keep-alive>
-                  <component :is="Component" />
+                  <component :is="Component"/>
                 </keep-alive>
+              </transition>
+            </router-view>
+            <router-view v-if="!$route.meta.keepAlive" v-slot="{ Component }">
+              <transition name="slide-fade">
+                <component :is="Component"/>
               </transition>
             </router-view>
           </div>

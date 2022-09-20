@@ -46,9 +46,7 @@
       <template v-for="song in songs" :key="song.id">
         <song-list-item :song="song" show-ar-name show-al-name />
       </template>
-        <div class="flex justify-center py-6">
-          <LoadMore :loadAll="loadAll" :loading="loading" :onloadMore="getMoreData" />
-        </div>
+      <LoadMore :loadAll="loadAll" :loading="loading" :onloadMore="getMoreData" />
     </div>
   </div>
 </template>
@@ -90,7 +88,7 @@ const getMoreData = async () => {
   loading.value = false
 }
 const playAll = () => {
-  pushPlayList(true, ...songs.value)
+  pushPlayList({replace:true}, ...songs.value)
 
   play(songs.value.first().id)
 }

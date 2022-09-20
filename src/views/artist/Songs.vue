@@ -52,7 +52,7 @@ const songList = ref<Song[]>([]);
 const {pushPlayList, play} = usePlayerStore()
 
 const playAll = () => {
-  pushPlayList(false, ...songList.value)
+  pushPlayList({replace:false}, ...songList.value)
   play(songList.value.first().id)
 }
 

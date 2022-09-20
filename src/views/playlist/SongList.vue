@@ -11,9 +11,10 @@
         <song-list-item :song="song" show-ar-name show-al-name show-time/>
       </template>
     </div>
-    <div class="flex justify-center py-5" v-if="songs.length>pageSize && !noMore">
+    <LoadMore :loadAll="noMore" :onloadMore="loadMore" />
+    <!-- <div class="flex justify-center py-5" v-if="songs.length>pageSize && !noMore">
       <el-button type="text" class="text-center  w-full" @click="loadMore">加载更多</el-button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -21,6 +22,7 @@
 
 import type {Song} from "@/models/song";
 import SongListItem from "@/components/common/SongListItem.vue";
+import LoadMore from '@/components/common/LoadMore.vue';
 import {computed, ref} from "vue";
 
 const props = defineProps<{

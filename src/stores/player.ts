@@ -5,6 +5,7 @@ import { useLyricStore } from '@/stores/lyric';
 import type { Song } from "@/models/song";
 import type { RecommendDjProgram } from "@/models/dj";
 import type { SongUrl } from "@/models/song_url";
+import messageAlert from '@/utils/messageAlert';
 // 将电台功能和音乐播放功能放在一起，耦合度太高，难以添加新功能
 const KEYS = {
     volume: 'PLAYER-VOLUME'
@@ -44,6 +45,8 @@ export const usePlayerStore = defineStore({
         thisIndex: state => state.playList.findIndex(song => song.id === state.id || song.djProgram?.id === state.id),
         nextSong(state): Song {
             const { thisIndex, playListCount } = this
+            console.log(thisIndex);
+
             if (thisIndex === playListCount - 1) {
                 return state.playList.first();
             } else {
@@ -94,6 +97,7 @@ export const usePlayerStore = defineStore({
         async play(id: number) {
             this.isPlaying = false
             const data = await useSongUrl(id)
+
             this.audio.src = data.url;
             console.log('歌曲ID:', id, '歌曲url:', data.url);
             this.audio.play().then(res => {
@@ -105,6 +109,13 @@ export const usePlayerStore = defineStore({
             }).catch(res => {
                 console.log(res)
             })
+            if (!data.url) {
+                // messageAlert.error('歌曲Url无效')
+                console.log('歌曲Url无效');
+
+                this.play(this.nextSong.id)
+                return
+            }
         },
         async songDetail() {
             const { setLyric } = useLyricStore()

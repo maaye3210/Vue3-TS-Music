@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import {useRoute} from "vue-router";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, onActivated} from "vue";
 import {usePlayListDetail, usePlayListTrackAll} from "@/utils/api";
 import Info from "@/views/playlist/Info.vue";
 import SongList from "@/views/playlist/SongList.vue";
@@ -34,7 +34,7 @@ const songs = ref<Song[]>([]);
 const {pushPlayList, play} = usePlayerStore()
 
 const playAll = () => {
-  pushPlayList(true, ...songs.value)
+  pushPlayList({replace:true}, ...songs.value)
 
   play(songs.value.first().id)
 }
@@ -51,6 +51,7 @@ const getData = () => {
   })
 }
 onMounted(getData)
+onActivated(getData)
 
 </script>
 
