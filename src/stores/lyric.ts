@@ -12,7 +12,7 @@ export const useLyricStore = defineStore('lyric', {
   state: () => {
     return {
       test: false,
-      lyrics: {} as Lyric,
+      lyrics: '',
       currentlyric: -1,
       jumping: false,
       controler: new TimerControler([], (index: number) => { }, 0),
@@ -23,10 +23,10 @@ export const useLyricStore = defineStore('lyric', {
     lyriclist: state => {
       const reg = /\[(?<time>.*)\](?<word>.*)\n/g
 
-      const res: { time: number, word: string }[] = []
+      const res = []
       if (state.lyrics) {
         let temp
-        while (temp = reg.exec(state.lyrics.lyric)) {
+        while (temp = reg.exec(state.lyrics)) {
           res.push({ time: stringToNumber(temp.groups!.time), word: temp.groups!.word })
         }
       }
@@ -42,13 +42,10 @@ export const useLyricStore = defineStore('lyric', {
       }
     },
     async getlyric(id: number) {
-      this.lyrics = (await lyric(id)).lrc
+      this.lyrics = (await lyric(id)).lrc.lyric
     },
     checkLyric(time: number) {
-      if (!this.checktime--) {
-        this.checktime = 3
-        this.controler.setTime(Math.round(time * 1000))
-      }
+      this.controler.setTime(Math.round(time * 1000))
     },
     jumpTo(time: number) {
       if (!this.jumping) {
@@ -63,6 +60,10 @@ export const useLyricStore = defineStore('lyric', {
         this.currentlyric = res
         this.jumping = false
       }
+    },
+    setLyric(newLyric: string) {
+      this.lyrics = newLyric
+      this.checkLyric(0)
     }
   }
 })

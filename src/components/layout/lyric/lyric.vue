@@ -23,7 +23,7 @@
           <p class="text-sm text-gray-400 mb-4">专辑：{{song.al?.name}}</p>
           <el-scrollbar max-height="24rem" ref="scrollbarRef" class="myscroll">
             <div class="h-36"></div>
-            <div v-for="(item,index) in lyriclist" class="mt-4 text-sm" :class="{'text-emerald-400 text-xl' : index===currentlyric}">
+            <div v-for="(item, index) in lyriclist" class="my-2 text-sm h-6" :class="{'text-emerald-400 text-xl h-8' : index===currentlyric}">
               {{ item.word }}
             </div>
             <div class="h-48"></div>
@@ -83,7 +83,7 @@ const {change}=useLyricStore()
 const uodateLyric=(index:number)=>{
   if (currentlyric.value != index) {
     currentlyric.value = index
-    scrollbarRef.value?.setScrollTop(index*36)
+    scrollbarRef.value?.setScrollTop(index*32)
   }
 }
 // 监视歌词序号，发生改变就更新

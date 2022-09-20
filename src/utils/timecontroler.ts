@@ -70,11 +70,13 @@ export class TimerControler {
   }
   resetTimeline(lyrics: { time: number }[], offset: number = 0) {
     this.reset()
+
     const origintimes = []
     for (let i = 0; i < lyrics.length; i++) {
       origintimes.push(Math.round(lyrics[i].time * 1000) - offset)
     }
     this.origintimes = origintimes
+
     const times = [origintimes[0]]
     for (let i = 1; i < origintimes.length; i++) {
       times.push(origintimes[i] - origintimes[i - 1])
@@ -128,21 +130,3 @@ export class TimerControler {
     this.starttime = (new Date).getTime() + this.lasttime
   }
 }
-
-// export interface TimerControler {
-//   currentIndex : number
-//   starttime : number
-//   lasttime : number
-//   isPlaying : boolean
-//   currenttime : Date
-//   Timer : NodeJS.Timer
-//   origintimes:number[]
-//   times:number[]
-//   handler:(index:number) => {}
-//   init:()=>void
-//   pause:()=>void
-//   continue:()=>void
-//   reset:()=>void
-//   settime:(time:number)=>void
-//   prototype:any
-// }
