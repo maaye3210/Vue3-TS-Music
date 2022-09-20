@@ -14,7 +14,7 @@
       <div class="flex-1 overflow-hidden">
         <el-scrollbar>
           <!-- dblclick双击事件 -->
-          <PlayListSongItem v-for="song in playList" :key="song.id" :song="song" :active="song.id===id" :dj-playing="djPlaying" @dblclick="handleClick(song)"/>
+          <PlayListSongItem v-for="song in playList" :key="song.id" :song="song" :active="(djPlaying? song.djProgram?.id :song.id) === id" :dj-playing="djPlaying" @dblclick="handleClick(song)"/>
           <div class="flex justify-center">
             <span v-if="djPlaying">
               <span v-if="!loadAllDjPage" class="text-sm text-center hover-text" @click="moreDj">加载更多</span>
