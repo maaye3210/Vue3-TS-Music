@@ -45,12 +45,12 @@ export const useUserStore = defineStore("user", {
         async checkLogin() {
             const {data} = await useLoginStatus()
             if (data.code === 200) {
-                this.profile = data.profile
+                this.profile = data.profile || {}
                 this.showLogin = false
-                this.account = data.account
-                this.uid = data.account.id
-                this.playlist = await userPlaylist(this.uid)
-                this.loveIdList = await userlikelist(this.uid)
+                this.account = data.account || {}
+                this.uid = data.account?.id || -1
+                this.uid!==-1 && (this.playlist = await userPlaylist(this.uid))
+                this.uid!==-1 && (this.loveIdList = await userlikelist(this.uid))
             }
 
         }

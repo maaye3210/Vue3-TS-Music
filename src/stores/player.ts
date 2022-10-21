@@ -11,13 +11,19 @@ const KEYS = {
     volume: 'PLAYER-VOLUME'
 }
 
+const enum LoopType {
+    SingleCycle,
+    ListLoop,
+    RandomPlay,
+}
+
 // tip:如何同步电台歌曲和电台节目——将电台节目储存在对应的歌曲上
 export const usePlayerStore = defineStore({
     id: "player",
     state: () => ({
         audio: new Audio(),
         audiocontext: new AudioContext(),
-        loopType: 0,//循环模式 0 单曲循环 1 列表循环 2随机播放
+        loopType: LoopType.SingleCycle,//循环模式 0 单曲循环 1 列表循环 2随机播放
         volume: localStorage.getItem(KEYS.volume)?.toInt() || 60,//音量
         playList: [] as Song[],//播放列表,
         showPlayList: false,
@@ -236,7 +242,7 @@ export const usePlayerStore = defineStore({
         // 以下为电台和普通歌曲交汇的逻辑
         //下一曲
         next() {
-            if (this.loopType === 2) {
+            if (this.loopType === LoopType.RandomPlay) {
                 this.randomPlay()
             } else {
                 if (this.djPlaying) {
@@ -312,10 +318,18 @@ export const usePlayerStore = defineStore({
         },
         //切换循环类型
         toggleLoop() {
-            if (this.loopType == 2) {
-                this.loopType = 0;
-            } else {
-                this.loopType++;
+            switch (this.loopType) {
+                case LoopType.RandomPlay:
+                    this.loopType = LoopType.SingleCycle
+                    break;
+                case LoopType.SingleCycle:
+                    this.loopType = LoopType.ListLoop
+                    break;
+                case LoopType.ListLoop:
+                    this.loopType = LoopType.RandomPlay
+                    break;
+                default:
+                    this.loopType = LoopType.SingleCycle
             }
         },
         //静音切换

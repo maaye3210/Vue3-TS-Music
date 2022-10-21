@@ -8,7 +8,7 @@
           地址请求失败，请检查后重试！
         </el-alert>
       </div>
-      <el-input size="large" placeholder="http://47.98.123.20:3000" v-model="pageData.host">
+      <!-- <el-input size="large" placeholder="http://47.98.123.20:3000" v-model="pageData.host">
         <template #prepend>API 地址</template>
         <template #append>
           <el-button @click="sub" :loading="pageData.loading">确定</el-button>
@@ -18,7 +18,7 @@
         <span>如何搭建？</span>
         <a class="hover-text text-emerald-400" href="https://binaryify.github.io/NeteaseCloudMusicApi" target="_blank">网易云音乐-API
           文档</a>
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -37,6 +37,7 @@ const pageData = reactive({
 })
 
 const {setHost} = useHostStore()
+setHost()
 
 const baseUrl = computed(() => {
   return pageData.host.trimEnd('/')||'http://47.98.123.20:3000'

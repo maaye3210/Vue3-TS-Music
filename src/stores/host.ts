@@ -4,7 +4,6 @@ export const useHostStore = defineStore('host', {
     state: () => {
         return {
             base_url: localStorage.getItem('BASE_URL') || '',
-
         }
     },
     getters: {
@@ -16,8 +15,8 @@ export const useHostStore = defineStore('host', {
         init() {
 
         },
-        setHost(host: string) {
-            localStorage.setItem('BASE_URL', host)
+        setHost(host?: string) {
+            localStorage.setItem('BASE_URL', host||'http://47.98.123.20:3000')
             location.reload()
         }
     }
