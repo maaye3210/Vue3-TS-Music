@@ -43,12 +43,13 @@ const onLoadMore = async () => {
 }
 const loading = ref(false)
 const handleClick = async (song: Song) => {
+  loading.value = true
   if (djPlaying) {
-    loading.value = true
     await playDj((song.djProgram?.id) as number)
-    loading.value = false
+  }else{
+    await play(song.id)
   }
-  play(song.id)
+  loading.value = false
 }
 
 </script>

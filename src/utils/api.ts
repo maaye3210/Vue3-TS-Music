@@ -241,7 +241,7 @@ export async function djToplist(limit: number) {
     return arr
 }
 // /lyric
-export async function lyric(id: number) {
+export async function getLyric(id: number) {
     return await http.get<Lyrics>("/lyric", { id })
 }
 

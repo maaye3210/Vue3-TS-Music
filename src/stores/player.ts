@@ -1,6 +1,6 @@
 import { defineStore, storeToRefs } from "pinia";
-import { useDetail, useSongUrl, djProgram, useProgramDjDetail, lyric } from "@/utils/api";
-import { onMounted, onUnmounted, toRefs, watch } from "vue";
+import { useDetail, useSongUrl, djProgram, useProgramDjDetail, getLyric } from "@/utils/api";
+import { watch } from "vue";
 import { useLyricStore } from '@/stores/lyric';
 import type { Song } from "@/models/song";
 import type { RecommendDjProgram } from "@/models/dj";
@@ -22,7 +22,6 @@ export const usePlayerStore = defineStore({
     id: "player",
     state: () => ({
         audio: new Audio(),
-        audiocontext: new AudioContext(),
         loopType: LoopType.SingleCycle,//循环模式 0 单曲循环 1 列表循环 2随机播放
         volume: localStorage.getItem(KEYS.volume)?.toInt() || 60,//音量
         playList: [] as Song[],//播放列表,
@@ -51,7 +50,6 @@ export const usePlayerStore = defineStore({
         thisIndex: state => state.playList.findIndex(song => song.id === state.id || song.djProgram?.id === state.id),
         nextSong(state): Song {
             const { thisIndex, playListCount } = this
-            console.log(thisIndex);
 
             if (thisIndex === playListCount - 1) {
                 return state.playList.first();
@@ -113,25 +111,24 @@ export const usePlayerStore = defineStore({
                 this.id = id
                 this.songDetail()
             }).catch(res => {
-                console.log(res)
+                console.error(res)
             })
             if (!data.url) {
-                // messageAlert.error('歌曲Url无效')
-                console.log('歌曲Url无效');
+                messageAlert.error('歌曲Url无效')
+                // console.log('歌曲Url无效');
 
                 this.play(this.nextSong.id)
                 return
             }
         },
         async songDetail() {
-            const { setLyric } = useLyricStore()
             this.song = await useDetail(this.id)
-            setLyric((await lyric(this.song.id)).lrc.lyric)
             this.pushPlayList({ replace: false }, this.song)
         },
         //播放列表里面添加音乐
         pushPlayList(config: { replace: boolean }, ...list: Song[]) {
-            if (config.replace || this.djPlaying) {
+            const { replace } = config
+            if (replace || this.djPlaying) {
                 this.playList = list;
             } else {
                 list.forEach(song => {
@@ -165,20 +162,24 @@ export const usePlayerStore = defineStore({
                 data.djProgram = res[i]
                 djList.push(data)
             }
-            this.pushDjList({ replace: false }, ...djList)
+            // 一定不是同一个电台
+            this.pushDjList({ replace: true }, ...djList)
             await this.playDj(this.djProgram.id)
         },
         async playDj(id?: number) {
             if (!id) return
             if (id == this.id) return;
+            const thisDjIndex = this.playList.findIndex(song => song.djProgram?.id === id)
+            if (thisDjIndex >= this.playListCount - 2) {
+                this.moreDj()
+            }
             this.isPlaying = false
             const detail = await useProgramDjDetail(id)
-            console.log(detail);
 
             const data = await useSongUrl(detail.mainSong.id)
             this.audio.src = data.url;
             console.log('节目ID:', id, '节目url:', data.url);
-            this.audio.play().then(() => {
+            await this.audio.play().then(() => {
                 this.isPlaying = true
                 this.songUrl = data
                 this.url = data.url
@@ -186,12 +187,12 @@ export const usePlayerStore = defineStore({
                 this.id = id
                 this.djDetail()
             }).catch(res => {
-                console.log(res)
+                console.error(res)
             })
         },
         // 异步加载更多电台节目
         async moreDj() {
-            const res = await djProgram(this.djProgramid, (this.currentDjPage + 1) * 5)
+            const res = await djProgram(this.djProgramid, (this.currentDjPage + 1) * 5, 5)
             const djList = [] as Song[]
             for (let i = 0; i < res.length; i++) {
                 const data = await useDetail(res[i].mainSong.id)
@@ -208,8 +209,11 @@ export const usePlayerStore = defineStore({
         //播放列表里面添加电台节目
         pushDjList(config: { replace: boolean }, ...list: Song[]) {
             // 如果之前不在播放电台，或者不是同一个电台就替换
+            const { replace } = config
             console.log('添加电台歌曲');
-            if (config.replace || !this.djPlaying || (this.djId != list[0].djId)) {
+            console.log(replace, !this.djPlaying);
+
+            if (replace || !this.djPlaying) {
                 this.playList = list;
                 this.djId = list[0].djId
                 console.log('列表替换成电台', list, !this.djPlaying, (this.djId != list[0].djId), this.djId, list[0].djId)
@@ -246,9 +250,6 @@ export const usePlayerStore = defineStore({
                 this.randomPlay()
             } else {
                 if (this.djPlaying) {
-                    if (this.thisIndex >= this.playListCount - 2) {
-                        this.moreDj()
-                    }
                     this.playDj(this.nextSong.djProgram?.id)
                 } else {
                     this.play(this.nextSong.id)
@@ -283,13 +284,13 @@ export const usePlayerStore = defineStore({
         playEnd() {
             console.log('播放结束')
             switch (this.loopType) {
-                case 0:
+                case LoopType.SingleCycle:
                     this.rePlay()
                     break;
-                case 1:
+                case LoopType.ListLoop:
                     this.next()
                     break;
-                case 2:
+                case LoopType.RandomPlay:
                     this.randomPlay()
                     break;
             }
@@ -367,17 +368,18 @@ export const usePlayerStore = defineStore({
 })
 
 export const userPlayerInit = () => {
-    const { checkLyric } = useLyricStore()
-    let timer: NodeJS.Timer;
+    const { checkLyric, setLyric } = useLyricStore()
 
-    const { init, interval, playEnd } = usePlayerStore()
+    const { init, interval, playEnd, audio } = usePlayerStore()
 
-    const { ended, audiocontext, audio } = storeToRefs(usePlayerStore())
+    init()
 
-    const audioparam = audiocontext.value.createGain()
-    console.log("参数：", audioparam);
+    const { ended, id, djPlaying } = storeToRefs(usePlayerStore())
 
-    console.log("上下文：", audiocontext.value);
+    audio.ontimeupdate = interval.before(() => {//装饰器，检查歌词位置
+        checkLyric(audio.currentTime)
+    })
+
     console.log("播放器：", audio);
 
     //监听播放结束
@@ -385,21 +387,27 @@ export const userPlayerInit = () => {
         if (!ended) return
         playEnd()
     })
+    watch(id, async id => {
+        console.log('监听到歌曲变化');
+        if (!djPlaying.value) {
+            setLyric((await getLyric(id)).lrc.lyric)
+        }
+    })
 
     //启动定时器
-    onMounted(() => {
-        init()
-        console.log('启动歌曲定时器')
-        timer = setInterval(interval.before(() => {//装饰器，检查歌词位置
-            checkLyric(audio.value.currentTime)
-        }), 1000)
-    })
+    // onMounted(() => {
+    //     init()
+    //     console.log('启动歌曲定时器')
+    //     timer = setInterval(interval.before(() => {//装饰器，检查歌词位置
+    //         checkLyric(audio.currentTime)
+    //     }), 1000)
+    // })
     //清除定时器
-    onUnmounted(() => {
-        console.log('清除歌曲定时器')
-        clearInterval(timer)
-    })
-    const getTime = () => {
-        return timer
-    }
+    // onUnmounted(() => {
+    //     console.log('清除歌曲定时器')
+    //     clearInterval(timer)
+    // })
+    // const getTime = () => {
+    //     return timer
+    // }
 }

@@ -5,7 +5,7 @@
   :style="{ backgroundImage: 'url(' + todaydj[programIndex].picUrl + ')'}"
   style="transform: scale(1.3)">
   </div>
-  <div class="absolute inset-0 bg-gray-500 bg-opacity-10"></div>
+  <div class="absolute inset-0 bg-gray-900 bg-opacity-20"></div>
   <div class="absolute inset-0 flex ">  
     <div>
       <djCover class="w-32 h-32 rounded-lg m-6"  

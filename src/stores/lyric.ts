@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from "pinia";
-import { lyric } from '@/utils/api';
+import { getLyric } from '@/utils/api';
 import { stringToNumber } from '@/utils/number';
 import { usePlayerStore } from '@/stores/player';
 import { TimerControler } from '@/utils/timecontroler';
@@ -42,7 +42,8 @@ export const useLyricStore = defineStore('lyric', {
       }
     },
     async getlyric(id: number) {
-      this.lyrics = (await lyric(id)).lrc.lyric
+      const lyric = (await getLyric(id)).lrc.lyric
+      this.lyrics = (await getLyric(id)).lrc.lyric
     },
     checkLyric(time: number) {
       this.controler.setTime(Math.round(time * 1000))
