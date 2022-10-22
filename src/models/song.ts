@@ -1,5 +1,7 @@
 import type { Artist } from '@/models/artist';
 import type { RecommendDjProgram } from '@/models/dj';
+
+export const ENPTY_SONG = {} as Song
 export interface Song {
     djProgram?: RecommendDjProgram
     name: string;

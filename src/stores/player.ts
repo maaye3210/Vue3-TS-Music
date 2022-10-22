@@ -3,6 +3,7 @@ import { useDetail, useSongUrl, djProgram, useProgramDjDetail, getLyric } from "
 import { watch } from "vue";
 import { useLyricStore } from '@/stores/lyric';
 import type { Song } from "@/models/song";
+import { ENPTY_SONG } from "@/models/song";
 import type { RecommendDjProgram } from "@/models/dj";
 import type { SongUrl } from "@/models/song_url";
 import messageAlert from '@/utils/messageAlert';
@@ -29,7 +30,7 @@ export const usePlayerStore = defineStore({
         id: 0,
         url: '',
         songUrl: {} as SongUrl,
-        song: {} as Song,
+        song: ENPTY_SONG,
         isPlaying: false, //是否播放中
         sliderInput: false,//是否正在拖动进度条
         ended: false,//是否播放结束
@@ -66,6 +67,9 @@ export const usePlayerStore = defineStore({
                 const prevIndex: number = thisIndex - 1
                 return state.playList[prevIndex];
             }
+        },
+        haveSong(state): boolean {
+            return state.song !== ENPTY_SONG
         }
     },
     actions: {
@@ -80,7 +84,7 @@ export const usePlayerStore = defineStore({
             this.songUrl = {} as SongUrl
             this.url = ''
             this.id = 0;
-            this.song = {} as Song
+            this.song = ENPTY_SONG
             this.isPlaying = false;
             this.sliderInput = false;
             this.ended = false;
@@ -387,10 +391,10 @@ export const userPlayerInit = () => {
         if (!ended) return
         playEnd()
     })
-    watch(id, async id => {
+    watch(id, id => {
         console.log('监听到歌曲变化');
         if (!djPlaying.value) {
-            setLyric((await getLyric(id)).lrc.lyric)
+            setLyric(id)
         }
     })
 

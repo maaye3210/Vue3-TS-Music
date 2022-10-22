@@ -12,7 +12,8 @@
       "@/*": [
         "./src/*"
       ]
-    }
+    },
+    "types": ["jest"],   
   },
   "references": [
     {

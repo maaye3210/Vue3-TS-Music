@@ -1,70 +1,41 @@
-import { defineStore, storeToRefs } from "pinia";
+import { defineStore } from "pinia";
 import { getLyric } from '@/utils/api';
-import { stringToNumber } from '@/utils/number';
 import { usePlayerStore } from '@/stores/player';
-import { TimerControler } from '@/utils/timecontroler';
-import type { Lyric } from '@/models/lyric';
-// import type { timerControler as TimerControler } from '@/utils/timecontroler';
-
+import type { lyricNode } from '@/models/lyric';
+import { formatLyric, formatLyricChain, checkLyric as checkLyric2 } from "./helper/lyrics";
 
 
 export const useLyricStore = defineStore('lyric', {
   state: () => {
     return {
-      test: false,
-      lyrics: '',
-      currentlyric: -1,
+      showLyrics: false,
       jumping: false,
-      controler: new TimerControler([], (index: number) => { }, 0),
-      checktime: 3
-    }
-  },
-  getters: {
-    lyriclist: state => {
-      const reg = /\[(?<time>.*)\](?<word>.*)\n/g
-
-      const res = []
-      if (state.lyrics) {
-        let temp
-        while (temp = reg.exec(state.lyrics)) {
-          res.push({ time: stringToNumber(temp.groups!.time), word: temp.groups!.word })
-        }
-      }
-      return res
+      currentNode: {} as lyricNode | null,
+      startNode: {} as lyricNode | null,
+      lyriclist: [] as string[]
     }
   },
   actions: {
-    change() {
-      const { djPlaying } = storeToRefs(usePlayerStore())
-
-      if (!djPlaying.value) {
-        this.test = !this.test
+    changeShowLyrics() {
+      const { djPlaying } = usePlayerStore()
+      if (!djPlaying) {
+        this.showLyrics = !this.showLyrics
       }
     },
-    async getlyric(id: number) {
-      const lyric = (await getLyric(id)).lrc.lyric
-      this.lyrics = (await getLyric(id)).lrc.lyric
+    async setLyric(id: number) {
+      const lyrics = (await getLyric(id)).lrc.lyric
+      this.lyriclist = formatLyric(lyrics)
+      this.startNode = formatLyricChain(lyrics)
+      this.currentNode = this.startNode
     },
     checkLyric(time: number) {
-      this.controler.setTime(Math.round(time * 1000))
-    },
-    jumpTo(time: number) {
-      if (!this.jumping) {
-        this.jumping = true
-        let res = this.lyriclist.length - 1
-        for (let i = 0; i < this.lyriclist.length; i++) {
-          if (time < this.lyriclist[i].time) {
-            res = i - 1
-            break
-          }
+      const formatedTime = Math.round(time * 1000)
+      if (this.currentNode) {
+        const nextNode = checkLyric2(formatedTime, this.currentNode)
+        if (nextNode) {
+          this.currentNode = nextNode
         }
-        this.currentlyric = res
-        this.jumping = false
       }
     },
-    setLyric(newLyric: string) {
-      this.lyrics = newLyric
-      this.checkLyric(0)
-    }
   }
 })

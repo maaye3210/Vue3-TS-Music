@@ -29,12 +29,11 @@ import {OpticalDisk} from '@/assets/img';
 import IconPark from "@/components/common/IconPark.vue";
 import {toRefs} from "vue";
 import {useLyricStore} from '@/stores/lyric';
-const {change}=useLyricStore()
+const {changeShowLyrics}=useLyricStore()
 
-const {song, songUrl, djPlaying, isPlaying} = toRefs(usePlayerStore())
+const {song, songUrl, djPlaying, haveSong} = toRefs(usePlayerStore())
 const openLyric=()=>{
-  
-  isPlaying.value && change()
+  haveSong.value && changeShowLyrics()
 }
 </script>
 

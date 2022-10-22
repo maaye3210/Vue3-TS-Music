@@ -1,5 +1,5 @@
 <template>
-  <div v-if="test" class="absolute overflow-hidden z-50 w-full h-full">
+  <div v-show="showLyrics" class="absolute overflow-hidden z-50 w-full h-full">
     <div 
     class="w-full h-full blur-lg bg-center" 
     style="transform: scale(1.3)">
@@ -8,7 +8,7 @@
     <div class="absolute inset-0 bg-black bg-opacity-50  p-4 pb-0 flex flex-col">
       <!-- 返回 -->
       <div class="h-16 flex items-center">
-        <icon-park  v-on:click="change" :icon="Down" class="text-gray-100 hover:text-teal-400" :size="32"></icon-park>
+        <icon-park  v-on:click="changeShowLyrics" :icon="Down" class="text-gray-100 hover:text-teal-400" :size="32"></icon-park>
       </div>
       <!-- 歌词专辑部分 -->
       <div class="flex-grow flex justify-around items-center">
@@ -17,14 +17,14 @@
         </div>
         <div class="flex-1 text-white flex flex-col justify-center text-center mr-10">
           <p class="text-xl my-4 flex justify-center leading-4">
-          {{song.name}}<icon-park  v-on:click="change" :icon="Youtube" class="text-gray-100 hover:text-teal-400 ml-2" :size="18"></icon-park>
+          {{song.name}}<icon-park  v-on:click="changeShowLyrics" :icon="Youtube" class="text-gray-100 hover:text-teal-400 ml-2" :size="18"></icon-park>
           </p>
           <p class="text-sm text-gray-400">歌手：{{song.ar?.first().name}}</p>
           <p class="text-sm text-gray-400 mb-4">专辑：{{song.al?.name}}</p>
-          <el-scrollbar max-height="24rem" ref="scrollbarRef" class="myscroll">
+          <el-scrollbar max-height="24rem" ref="scrollbarRef">
             <div class="h-36"></div>
-            <div v-for="(item, index) in lyriclist" class="my-2 text-sm h-6" :class="{'text-emerald-400 text-xl h-8' : index===currentlyric}">
-              {{ item.word }}
+            <div v-for="(lyric, index) in lyriclist" class="my-2 text-sm h-6" :class="{'text-emerald-400 text-xl h-8' : index===currentNode!.index}">
+              {{ lyric }}
             </div>
             <div class="h-48"></div>
           </el-scrollbar>
@@ -64,7 +64,7 @@
 
 </template>
 <script setup lang="ts">
-import {toRefs,ref, onMounted ,watch } from 'vue';
+import {toRefs,ref, watch, nextTick } from 'vue';
 import {useLyricStore} from '@/stores/lyric';
 import {usePlayerStore} from "@/stores/player";
 import {useFormatDuring} from "@/utils/number";
@@ -72,43 +72,36 @@ import {Down,Youtube,Like, DownTwo, MoreTwo, Comment,TextMessage,MusicList} from
 import IconPark from '@/components/common/IconPark.vue';
 import Controller from "@/components/layout/lyric/Controller.vue";
 import PlayerSlider from "@/components/layout/footer/PlayerSlider.vue";
-import { TimerControler } from '@/utils/timecontroler';
 import type { ElScrollbar } from 'element-plus'
 
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
-const {song, currentTime, duration, playListCount, showPlayList,isPlaying,sliderInput} = toRefs(usePlayerStore())
-const {test, lyriclist, currentlyric, controler}=toRefs(useLyricStore())
-const {change}=useLyricStore()
+const scrollbarContainer = ref<Element>()
+const {song, currentTime, duration, playListCount, showPlayList} = toRefs(usePlayerStore())
+const {showLyrics, lyriclist, currentNode}=toRefs(useLyricStore())
+const {changeShowLyrics}=useLyricStore()
 // 更新歌词。设置顶部的位置
-const uodateLyric=(index:number)=>{
-  if (currentlyric.value != index) {
-    currentlyric.value = index
-    scrollbarRef.value?.setScrollTop(index*32)
+const updateLyric=(index:number)=>{
+  if (scrollbarContainer.value) {
+    scrollbarContainer.value.scrollTo({
+      top: index*32,
+      behavior: 'smooth'
+    })
   }
 }
-// 监视歌词序号，发生改变就更新
-// watch (currentlyric,(newValue)=>{
-//   uodateLyric(newValue)
-// })
 
-watch (lyriclist,(newValue)=>{
-  controler.value.resetTimeline(newValue,200)
-  controler.value.init()
+watch(currentNode, newNode=>{
+  updateLyric(newNode!.index)
 })
-watch (isPlaying,(newValue)=>{
+
+watch(showLyrics, (newValue)=>{
   if (newValue) {
-    controler.value.continue()
-  }else{
-    controler.value.pause()
+    nextTick().then(
+        ()=>updateLyric(currentNode.value!.index)
+      ).then(
+        ()=>console.log(scrollbarContainer.value = scrollbarRef.value!.$el.getElementsByClassName('el-scrollbar__wrap')[0])
+      )
   }
 })
-watch (sliderInput,(newValue)=>{
-  newValue&&controler.value.setTime(currentTime.value*1000,true)
-})
-onMounted(()=>{
-  controler.value.handler=uodateLyric
-})
-
 
 </script>
 <style lang="scss">
@@ -118,9 +111,4 @@ onMounted(()=>{
       @apply dark:bg-stone-900;
     }
   }
-.myscroll{
-    .el-scrollbar__view{
-      transition: transform 1s;
-    }
-}
 </style>
