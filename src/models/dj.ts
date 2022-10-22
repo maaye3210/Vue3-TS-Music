@@ -1,5 +1,6 @@
-import type {Album} from '@/models/album';
-import type {Artist} from '@/models/artist';
+import type { Album } from '@/models/album';
+import type { Artist } from '@/models/artist';
+
 
 
 export interface DJBanner {
@@ -16,38 +17,38 @@ export interface DjCatelist {
 }
 export interface DjRecommend {
 	defaultAvatar: boolean,
-  province: number,
-  authStatus: number,
-  followed: boolean,
-  vatarUrl: string,
-  accountStatus: number,
-  gender: number,
-  city: number,
-  birthday: number,
-  userId: number,
-  userType: number,
-  nickname: string,
-  signature: string,
-  description: string,
-  detailDescription: string,
-  avatarImgId: number,
-  backgroundImgId: number,
-  backgroundUrl: string,
-  authority: number,
-  mutual: boolean,
-  expertTags: object,
-  experts: object,
-  djStatus: number,
-  vipType: number,
-  remarkName: object,
-  authenticationTypes: number,
-  avatarDetail: object,
-  anchor: boolean,
-  avatarImgIdStr: string,
-  backgroundImgIdStr: string,
-  avatarImgId_str: string
+	province: number,
+	authStatus: number,
+	followed: boolean,
+	vatarUrl: string,
+	accountStatus: number,
+	gender: number,
+	city: number,
+	birthday: number,
+	userId: number,
+	userType: number,
+	nickname: string,
+	signature: string,
+	description: string,
+	detailDescription: string,
+	avatarImgId: number,
+	backgroundImgId: number,
+	backgroundUrl: string,
+	authority: number,
+	mutual: boolean,
+	expertTags: object,
+	experts: object,
+	djStatus: number,
+	vipType: number,
+	remarkName: object,
+	authenticationTypes: number,
+	avatarDetail: object,
+	anchor: boolean,
+	avatarImgIdStr: string,
+	backgroundImgIdStr: string,
+	avatarImgId_str: string
 }
-export interface DJ{
+export interface DJ {
 	accountStatus: number
 	anchor: boolean
 	authStatus: number
@@ -81,7 +82,7 @@ export interface DJ{
 	userType: number
 	vipType: number
 }
-export interface DjInfo{
+export interface DjInfo {
 	dj: DJ
 	category: string,
 	secondCategory: string,
@@ -121,10 +122,10 @@ export interface DjInfo{
 	rcmdtext: string,
 	lastUpdateProgramName: string
 }
-export interface CurrentPage{
-	currentName:string
-	currentId:number
-	djInfoList:DjInfo[]
+export interface CurrentPage {
+	currentName: string
+	currentId: number
+	djInfoList: DjInfo[]
 }
 export interface Recommend {
 	dj: DJ,
@@ -173,9 +174,9 @@ export interface Recommend {
 	videos: object
 	whiteList: boolean
 }
-export interface RecommendDjProgram{
+export interface RecommendDjProgram {
 	alg: object
-	artists:Artist[]
+	artists: Artist[]
 	auditDisPlayStatus: number
 	auditStatus: number
 	authDTO: object
@@ -230,7 +231,7 @@ export interface RecommendDjProgram{
 	trackCount: number
 	videoInfo: object
 }
-export interface Quality{
+export interface Quality {
 	bitrate: number
 	dfsId: number
 	extension: string
@@ -241,7 +242,7 @@ export interface Quality{
 	sr: number
 	volumeDelta: number
 }
-export interface Radio{
+export interface Radio {
 	buyed: boolean
 	category: string
 	categoryId: number
@@ -339,18 +340,18 @@ export interface djRadios {
 	subCount: number
 	subed: boolean
 }
-export interface userDjRecommend{
-	name:string
-	djRadios:djRadios[]
+export interface userDjRecommend {
+	name: string
+	djRadios: djRadios[]
 }
-export interface djHourTopList{
+export interface djHourTopList {
 	lastRank: number
 	program: RecommendDjProgram
 	programFeeType: number
 	rank: number
 	score: number
 }
-export interface todayPerferedDj{
+export interface todayPerferedDj {
 	alg: string
 	discountPrice: object
 	feeScope: number
@@ -369,39 +370,41 @@ export interface todayPerferedDj{
 	traceId: object
 }
 export interface djDetail {
-    id: number,
-    name: string,
-    dj: DJ,
-    picId: number,
-    picUrl: string,
-    desc: string,
-    subCount: number,
-    shareCount: number,
-    likedCount: number,
-    programCount: number,
-    commentCount: number,
-    createTime: number,
-    categoryId: number,
-    category: string,
-    secondCategoryId: number,
-    secondCategory: string,
-    radioFeeType: number,
-    feeScope: number,
-    lastProgramCreateTime: number,
-    lastProgramId: number,
-    rcmdText: string,
-    subed: boolean,
-    commentDatas: [],
-    feeInfo: object,
-    unlockInfo: object,
-    original: boolean,
-    playCount: number,
-    privacy: boolean,
-    disableShare: boolean,
-    icon: object,
-    activityInfo: object,
-    toplistInfo: object,
-    dynamic: boolean,
-    labelDto: object,
-    labels: object
+	id: number,
+	name: string,
+	dj: DJ,
+	picId: number,
+	picUrl: string,
+	desc: string,
+	subCount: number,
+	shareCount: number,
+	likedCount: number,
+	programCount: number,
+	commentCount: number,
+	createTime: number,
+	categoryId: number,
+	category: string,
+	secondCategoryId: number,
+	secondCategory: string,
+	radioFeeType: number,
+	feeScope: number,
+	lastProgramCreateTime: number,
+	lastProgramId: number,
+	rcmdText: string,
+	subed: boolean,
+	commentDatas: [],
+	feeInfo: object,
+	unlockInfo: object,
+	original: boolean,
+	playCount: number,
+	privacy: boolean,
+	disableShare: boolean,
+	icon: object,
+	activityInfo: object,
+	toplistInfo: object,
+	dynamic: boolean,
+	labelDto: object,
+	labels: object
 }
+
+export const ENPTY_DJ_PROGRAM = {} as RecommendDjProgram

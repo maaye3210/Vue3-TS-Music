@@ -4,9 +4,10 @@ import { watch } from "vue";
 import { useLyricStore } from '@/stores/lyric';
 import type { Song } from "@/models/song";
 import { ENPTY_SONG } from "@/models/song";
-import type { RecommendDjProgram } from "@/models/dj";
+import { ENPTY_DJ_PROGRAM } from "@/models/dj";
 import type { SongUrl } from "@/models/song_url";
 import messageAlert from '@/utils/messageAlert';
+import { nextTick } from "vue";
 // 将电台功能和音乐播放功能放在一起，耦合度太高，难以添加新功能
 const KEYS = {
     volume: 'PLAYER-VOLUME'
@@ -41,7 +42,7 @@ export const usePlayerStore = defineStore({
         currentDjPage: 0,
         loadAllDjPage: false,
         djId: 0,//电台节目id，是返回的电台节目里表示电台的id
-        djProgram: {} as RecommendDjProgram,
+        djProgram: ENPTY_DJ_PROGRAM,
         djProgramid: 0
     }),
     getters: {
@@ -95,7 +96,7 @@ export const usePlayerStore = defineStore({
             this.djPlaying = false
             this.djId = 0
             this.djProgramid = 0
-            this.djProgram = {} as RecommendDjProgram
+            this.djProgram = ENPTY_DJ_PROGRAM
             this.loadAllDjPage = false
             this.audio.load()
             setTimeout(() => {
@@ -104,26 +105,21 @@ export const usePlayerStore = defineStore({
         },
         async play(id: number) {
             this.isPlaying = false
-            const data = await useSongUrl(id)
-
-            this.audio.src = data.url;
-            console.log('歌曲ID:', id, '歌曲url:', data.url);
-            await this.audio.play().then(res => {
-                this.isPlaying = true
-                this.songUrl = data
-                this.url = data.url
-                this.id = id
-                this.songDetail()
-            }).catch(res => {
-                console.error(res)
-            })
-            if (!data.url) {
+            const songUrlInfo = await useSongUrl(id)
+            if (!songUrlInfo.url) {
                 messageAlert.error('歌曲Url无效')
-                // console.log('歌曲Url无效');
-
                 this.play(this.nextSong.id)
                 return
             }
+
+            this.audio.src = songUrlInfo.url;
+            console.log('歌曲ID:', id, '歌曲url:', songUrlInfo.url);
+            await this.audio.play().catch(res => console.error(res))
+            this.isPlaying = true
+            this.songUrl = songUrlInfo
+            this.url = songUrlInfo.url
+            this.id = id
+            await this.songDetail()
         },
         async songDetail() {
             this.song = await useDetail(this.id)
@@ -143,7 +139,7 @@ export const usePlayerStore = defineStore({
                 })
             }
             this.djProgramid = 0
-            this.djProgram = {} as RecommendDjProgram
+            this.djProgram = ENPTY_DJ_PROGRAM
             this.currentDjPage = 0
             this.djPlaying = false
         },
@@ -156,16 +152,14 @@ export const usePlayerStore = defineStore({
             if (id == this.djProgramid) return;
             this.clearPlayList()
             // 因为电台节目没有给出确定的url，需要自己用id查询
-            const res = await djProgram(id)
-            console.log('电台ID:', id, '电台节目', res)
+            const djProgramInfos = await djProgram(id)
+            console.log('电台ID:', id, '电台节目', djProgramInfos)
             this.djProgramid = id
-            this.djProgram = res[0]
-            const djList = [] as Song[]
-            for (let i = 0; i < res.length; i++) {
-                const data = await useDetail(res[i].mainSong.id)
-                data.djProgram = res[i]
-                djList.push(data)
-            }
+            this.djProgram = djProgramInfos[0]
+            const djList = await Promise.all(djProgramInfos.map(djProgramInfo => useDetail(djProgramInfo.mainSong.id).then(res => {
+                res.djProgram = djProgramInfo
+                return res
+            })))
             // 一定不是同一个电台
             this.pushDjList({ replace: true }, ...djList)
             await this.playDj(this.djProgram.id)
@@ -183,16 +177,13 @@ export const usePlayerStore = defineStore({
             const data = await useSongUrl(detail.mainSong.id)
             this.audio.src = data.url;
             console.log('节目ID:', id, '节目url:', data.url);
-            await this.audio.play().then(() => {
-                this.isPlaying = true
-                this.songUrl = data
-                this.url = data.url
-                this.djProgram = detail
-                this.id = id
-                this.djDetail()
-            }).catch(res => {
-                console.error(res)
-            })
+            await this.audio.play().catch(res => console.error(res))
+            this.isPlaying = true
+            this.songUrl = data
+            this.url = data.url
+            this.djProgram = detail
+            this.id = id
+            this.djDetail()
         },
         // 异步加载更多电台节目
         async moreDj() {
@@ -381,7 +372,7 @@ export const userPlayerInit = () => {
     const { ended, id, djPlaying } = storeToRefs(usePlayerStore())
 
     audio.ontimeupdate = interval.before(() => {//装饰器，检查歌词位置
-        checkLyric(audio.currentTime)
+        !djPlaying.value && checkLyric(audio.currentTime)
     })
 
     console.log("播放器：", audio);
@@ -393,6 +384,7 @@ export const userPlayerInit = () => {
     })
     watch(id, id => {
         console.log('监听到歌曲变化');
+        nextTick().then()
         if (!djPlaying.value) {
             setLyric(id)
         }
