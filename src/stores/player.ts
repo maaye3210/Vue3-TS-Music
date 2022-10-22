@@ -108,7 +108,7 @@ export const usePlayerStore = defineStore({
 
             this.audio.src = data.url;
             console.log('歌曲ID:', id, '歌曲url:', data.url);
-            this.audio.play().then(res => {
+            await this.audio.play().then(res => {
                 this.isPlaying = true
                 this.songUrl = data
                 this.url = data.url

@@ -35,7 +35,6 @@ const {pushPlayList, play} = usePlayerStore()
 
 const playAll = () => {
   pushPlayList({replace:true}, ...songs.value)
-
   play(songs.value.first().id)
 }
 
