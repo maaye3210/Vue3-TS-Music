@@ -1,11 +1,11 @@
 <template>
   <div class="w-screen h-screen flex items-stretch overflow-hidden">
     <div class="w-56 h-screen flex-shrink-0">
-      <Menu/>
+      <Menu />
     </div>
     <div class="flex-1 flex flex-col ">
       <div class="h-14">
-        <Header/>
+        <Header />
       </div>
       <div class="flex-1 overflow-hidden">
         <ElScrollbar>
@@ -13,25 +13,25 @@
             <router-view v-show="$route.meta.keepAlive" v-slot="{ Component }">
               <transition name="slide-fade">
                 <keep-alive>
-                  <component :is="Component"/>
+                  <component :is="Component" />
                 </keep-alive>
               </transition>
             </router-view>
             <router-view v-if="!$route.meta.keepAlive" v-slot="{ Component }">
               <transition name="slide-fade">
-                <component :is="Component"/>
+                <component :is="Component" />
               </transition>
             </router-view>
           </div>
         </ElScrollbar>
       </div>
       <div class="h-20">
-        <Footer/>
+        <Footer />
       </div>
     </div>
     <Lyric></Lyric>
 
-    <PlayList/>
+    <PlayList />
 
   </div>
 </template>
@@ -47,10 +47,12 @@ import Lyric from "@/components/layout/lyric/lyric.vue";
 .slide-fade-enter-active {
   transition: all 0.8s ease-out;
 }
+
 .slide-fade-enter-from
-/* .slide-fade-leave-active for below version 2.1.8 */ {
+
+/* .slide-fade-leave-active for below version 2.1.8 */
+  {
   transform: translateX(30px);
   opacity: 0;
 }
-
 </style>

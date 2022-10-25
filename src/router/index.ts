@@ -1,5 +1,5 @@
-import {createRouter, createWebHistory, createWebHashHistory} from 'vue-router'
-import {Pages} from "@/router/pages";
+import { createRouter, createWebHashHistory } from 'vue-router'
+import { Pages } from "@/router/pages";
 
 const router = createRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -8,7 +8,7 @@ const router = createRouter({
             path: '/',
             name: Pages.home,
             component: () => import('@/views/Root.vue'),
-            redirect: {name: Pages.discover},
+            redirect: { name: Pages.discover },
             children: [
                 // 推荐页
                 {
@@ -25,9 +25,10 @@ const router = createRouter({
                     path: 'music',
                     name: 'music',
                     component: () => import('@/views/music/Music.vue'),
-                    redirect: {name: 'picked'},
+                    redirect: { name: 'picked' },
                     meta: {
-                        menu: 'music'
+                        menu: 'music',
+                        keepAlive: true,
                     },
                     children: [
                         {
@@ -77,7 +78,7 @@ const router = createRouter({
                             meta: {
                                 menu: 'music',
                                 title: '数字专辑',
-                                keepAlive: true,
+                                keepAlive: false,
                             }
                         },
                         {

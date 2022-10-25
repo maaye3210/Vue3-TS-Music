@@ -4,12 +4,16 @@
     <el-affix target=".music" :offset="56">
       <div class="bg-view">
         <el-tabs v-model="currentMenu" @tab-click="onTabClick">
-          <el-tab-pane v-for="menu in menus" :key="menu.name" :label="menu.label" :name="menu.name" class="text-main"/>
+          <el-tab-pane v-for="menu in menus" :key="menu.name" :label="menu.label" :name="menu.name" class="text-main" />
         </el-tabs>
       </div>
     </el-affix>
     <div class="mt-5">
-      <RouterView/>
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
     </div>
 
   </div>
@@ -17,9 +21,9 @@
 
 <script setup lang="ts">
 
-import {useMusicMenu} from "@/views/music/MusicController";
+import { useMusicMenu } from "@/views/music/MusicController";
 
-const {menus, currentMenu, onTabClick} = useMusicMenu()
+const { menus, currentMenu, onTabClick } = useMusicMenu()
 </script>
 
 <style lang="scss">
@@ -27,9 +31,9 @@ const {menus, currentMenu, onTabClick} = useMusicMenu()
   .el-tabs__nav-wrap::after {
     height: 0;
   }
-  .el-tabs__header{
+
+  .el-tabs__header {
     @apply m-0;
   }
 }
-
 </style>
