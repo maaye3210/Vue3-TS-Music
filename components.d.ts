@@ -5,7 +5,6 @@
 declare module 'vue' {
   export interface GlobalComponents {
     Banner: typeof import('./src/components/common/Banner.vue')['default']
-    CacheComponent: typeof import('./src/components/common/CacheComponent.vue')['default']
     Controller: typeof import('./src/components/layout/lyric/Controller.vue')['default']
     CoverPlay: typeof import('./src/components/common/CoverPlay.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']
